@@ -1,0 +1,1193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Syne:wght@400;500;600;700&family=Syne+Mono&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --void:#07080a;
+  --base:#0b0c0f;
+  --surface:#0f1115;
+  --lift:#14161c;
+  --panel:#191c23;
+  --border:#1e2229;
+  --border-hi:#272c36;
+  --muted:#3d4455;
+  --subtle:#5a6278;
+  --mid:#7a8499;
+  --ghost:#a8b0c0;
+  --light:#cdd3de;
+  --ivory:#e8ecf2;
+  --white:#f4f6f9;
+
+  --gold:#c9a84c;
+  --gold-hi:#e2c06a;
+  --gold-lo:#a8893a;
+  --gold-dim:rgba(201,168,76,0.08);
+  --gold-glow:rgba(201,168,76,0.15);
+  --gold-border:rgba(201,168,76,0.22);
+
+  --sage:#718376;
+  --sage-dim:rgba(113,131,118,0.08);
+  --sage-border:rgba(113,131,118,0.25);
+
+  --coral:#e87870;
+  --coral-dim:rgba(232,120,112,0.08);
+
+  --steel:#94a3b8;
+
+  --r:3px;
+  --r-lg:6px;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--base);
+  color:var(--light);
+  font-family:'Syne',sans-serif;
+  font-size:14px;
+  line-height:1.7;
+  overflow-x:hidden;
+  cursor:default;
+}
+
+/* ── SCANLINE TEXTURE ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events:none;z-index:999;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;
+  height:64px;
+  background:rgba(7,8,10,0.88);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+
+.nav-mark{width:34px;height:34px;flex-shrink:0}
+
+.nav-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-weight:400;letter-spacing:0.06em;
+  color:var(--ivory);text-transform:uppercase;
+}
+
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none}
+
+.nav-links a{
+  font-size:11px;font-weight:500;letter-spacing:0.12em;
+  color:var(--subtle);text-decoration:none;text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--gold)}
+
+.nav-cta{
+  font-size:11px;font-weight:600;letter-spacing:0.08em;
+  color:var(--void);background:var(--gold);
+  padding:9px 22px;border-radius:var(--r);
+  text-transform:uppercase;border:none;cursor:pointer;
+  transition:background 0.2s,transform 0.1s;
+  text-decoration:none;
+}
+.nav-cta:hover{background:var(--gold-hi);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:100px 52px 80px;
+  overflow:hidden;
+}
+
+/* Animated grid */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,168,76,0.035) 1px,transparent 1px);
+  background-size:72px 72px;
+  animation:grid-drift 20s linear infinite;
+}
+@keyframes grid-drift{
+  0%{background-position:0 0}
+  100%{background-position:72px 72px}
+}
+
+/* Radial vignette */
+.hero-vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 80% at 30% 50%,transparent 20%,var(--base) 80%);
+  pointer-events:none;
+}
+
+/* Gold orb */
+.hero-orb{
+  position:absolute;
+  right:15%;top:50%;transform:translateY(-50%);
+  width:480px;height:480px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,76,0.07) 0%,rgba(113,131,118,0.04) 40%,transparent 70%);
+  animation:orb-breathe 6s ease-in-out infinite;
+}
+@keyframes orb-breathe{
+  0%,100%{transform:translateY(-50%) scale(1);opacity:0.7}
+  50%{transform:translateY(-50%) scale(1.06);opacity:1}
+}
+
+.hero-content{position:relative;z-index:2;max-width:680px}
+
+/* Animated badge */
+.hero-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Syne Mono',monospace;
+  font-size:10px;letter-spacing:0.1em;color:var(--gold);
+  border:1px solid var(--gold-border);
+  background:var(--gold-dim);
+  padding:7px 16px;border-radius:var(--r);
+  margin-bottom:44px;
+  animation:badge-in 0.8s ease both;
+}
+@keyframes badge-in{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+
+.badge-pip{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);
+  animation:pip 2s ease-in-out infinite;
+}
+@keyframes pip{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.5)}}
+
+/* Headline */
+.hero-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,6.5vw,88px);
+  font-weight:300;
+  line-height:1.0;
+  letter-spacing:-1px;
+  color:var(--white);
+  margin-bottom:8px;
+  animation:h1-in 0.9s ease 0.15s both;
+}
+@keyframes h1-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+.hero-h1 em{
+  font-style:italic;
+  color:var(--gold-hi);
+}
+
+.hero-h1-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(28px,3.5vw,46px);
+  font-weight:300;font-style:italic;
+  color:var(--sage);
+  line-height:1.1;
+  margin-bottom:36px;
+  animation:h1-in 0.9s ease 0.25s both;
+}
+
+.hero-body{
+  font-size:15px;font-weight:400;
+  color:var(--subtle);
+  max-width:480px;line-height:1.85;
+  margin-bottom:52px;
+  animation:h1-in 0.9s ease 0.35s both;
+}
+
+.hero-actions{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  animation:h1-in 0.9s ease 0.45s both;
+}
+
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--gold);color:var(--void);
+  font-family:'Syne',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:14px 32px;border-radius:var(--r);
+  border:none;cursor:pointer;
+  transition:background 0.2s,transform 0.15s,box-shadow 0.2s;
+}
+.btn-primary:hover{
+  background:var(--gold-hi);
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(201,168,76,0.25);
+}
+.btn-primary:active{transform:scale(0.98)}
+
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;color:var(--ghost);
+  font-family:'Syne',sans-serif;
+  font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
+  padding:14px 24px;border-radius:var(--r);
+  border:1px solid var(--border-hi);cursor:pointer;
+  transition:border-color 0.2s,color 0.2s;
+}
+.btn-ghost:hover{border-color:var(--gold-border);color:var(--gold)}
+
+/* LOGO — hero right */
+.hero-logo-display{
+  position:absolute;right:8%;top:50%;transform:translateY(-50%);
+  z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+  animation:logo-in 1.2s ease 0.3s both;
+}
+@keyframes logo-in{from{opacity:0;transform:translateY(-50%) scale(0.9)}to{opacity:1;transform:translateY(-50%) scale(1)}}
+
+.logo-ring-wrap{
+  position:relative;
+  width:240px;height:240px;
+}
+
+.logo-ring-wrap svg{
+  width:100%;height:100%;
+  filter:drop-shadow(0 0 48px rgba(201,168,76,0.12)) drop-shadow(0 0 16px rgba(113,131,118,0.08));
+  animation:logo-rotate-slow 40s linear infinite;
+}
+@keyframes logo-rotate-slow{
+  0%{filter:drop-shadow(0 0 48px rgba(201,168,76,0.12))}
+  50%{filter:drop-shadow(0 0 64px rgba(201,168,76,0.2))}
+  100%{filter:drop-shadow(0 0 48px rgba(201,168,76,0.12))}
+}
+
+.logo-caption{text-align:center}
+.logo-caption-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:400;letter-spacing:0.18em;
+  color:var(--ghost);text-transform:uppercase;
+}
+.logo-caption-sub{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.12em;
+  color:var(--muted);text-transform:uppercase;margin-top:4px;
+}
+
+/* ── METRICS STRIP ── */
+.metrics{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:var(--surface);
+}
+
+.metric{
+  padding:40px 40px;
+  border-right:1px solid var(--border);
+  position:relative;overflow:hidden;
+  transition:background 0.2s;
+}
+.metric:last-child{border-right:none}
+.metric:hover{background:var(--lift)}
+
+.metric::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.metric:hover::after{opacity:1}
+
+.metric-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:52px;font-weight:300;color:var(--gold-hi);
+  line-height:1;letter-spacing:-2px;margin-bottom:8px;
+}
+
+.metric-l{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.1em;
+  color:var(--muted);text-transform:uppercase;line-height:1.5;
+}
+
+/* ── SECTION SHELL ── */
+section{padding:104px 52px}
+
+.s-eye{
+  font-family:'Syne Mono',monospace;
+  font-size:10px;letter-spacing:0.14em;
+  color:var(--gold);text-transform:uppercase;
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.s-eye::before{
+  content:'';display:block;
+  width:24px;height:1px;background:var(--gold);opacity:0.5;
+}
+
+.s-h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,4vw,54px);
+  font-weight:300;letter-spacing:-0.5px;
+  color:var(--white);line-height:1.1;
+  margin-bottom:20px;max-width:640px;
+}
+
+.s-h2 em{font-style:italic;color:var(--gold-hi)}
+
+.s-body{
+  font-size:14px;font-weight:400;
+  color:var(--subtle);
+  max-width:520px;line-height:1.9;
+}
+
+/* ── PLATFORM GRID ── */
+.p-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  margin-top:60px;
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  background:var(--border);
+  gap:1px;
+}
+
+.p-card{
+  background:var(--surface);
+  padding:36px 30px;
+  position:relative;
+  transition:background 0.25s,transform 0.2s;
+  cursor:default;
+}
+
+.p-card:hover{background:var(--lift);transform:translateY(-2px) scale(1.01);z-index:2}
+
+.p-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 10%,var(--gold) 50%,transparent 90%);
+  opacity:0;transition:opacity 0.3s;
+}
+.p-card:hover::before{opacity:1}
+
+.p-mod{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.12em;
+  color:var(--muted);text-transform:uppercase;margin-bottom:14px;
+}
+
+.p-name{
+  font-size:14px;font-weight:600;
+  color:var(--ivory);margin-bottom:10px;letter-spacing:-0.1px;line-height:1.35;
+}
+
+.p-desc{
+  font-size:12px;font-weight:400;
+  color:var(--subtle);line-height:1.75;
+}
+
+.p-live{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:18px;
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.08em;
+  color:var(--gold);
+  background:var(--gold-dim);
+  border:1px solid var(--gold-border);
+  padding:4px 10px;border-radius:var(--r);
+  text-transform:uppercase;
+}
+
+.live-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--gold);
+  animation:pip 2s ease-in-out infinite;
+}
+
+/* ── LIVE PROOF STRIP ── */
+.proof-strip{
+  background:var(--surface);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:0 52px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:0;
+}
+
+.proof-label{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.14em;color:var(--muted);
+  text-transform:uppercase;padding:24px 0;
+  border-right:1px solid var(--border);padding-right:40px;flex-shrink:0;
+}
+
+.proof-links{
+  display:flex;align-items:center;gap:0;
+  flex:1;
+}
+
+.proof-link{
+  display:flex;align-items:center;gap:10px;
+  padding:24px 40px;
+  border-right:1px solid var(--border);
+  text-decoration:none;
+  transition:background 0.2s;
+  flex:1;
+  cursor:pointer;
+}
+.proof-link:last-child{border-right:none}
+.proof-link:hover{background:var(--lift)}
+
+.proof-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green,#4a9e6a);
+  flex-shrink:0;
+  animation:pip 2s ease-in-out infinite;
+  box-shadow:0 0 6px rgba(74,158,106,0.6);
+}
+
+.proof-url{
+  font-family:'Syne Mono',monospace;
+  font-size:11px;letter-spacing:0.04em;
+  color:var(--ghost);
+}
+
+.proof-desc{
+  font-size:11px;color:var(--muted);margin-top:1px;
+}
+
+/* ── ARCHITECTURE ── */
+.arch-section{
+  background:var(--void);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+
+.arch-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:start;
+}
+
+/* Agent hierarchy — visual */
+.agent-hierarchy{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);overflow:hidden;
+  margin-bottom:16px;
+}
+
+.ah-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-bottom:1px solid var(--border);
+}
+
+.ah-title{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.12em;color:var(--subtle);
+  text-transform:uppercase;
+}
+
+.ah-badge{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.06em;
+  color:var(--gold);background:var(--gold-dim);
+  border:1px solid var(--gold-border);
+  padding:2px 9px;border-radius:var(--r);
+}
+
+.ah-body{padding:24px 20px}
+
+/* Visual agent nodes */
+.av-node{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:6px;
+}
+
+.av-block{
+  padding:9px 14px;border-radius:var(--r);
+  font-family:'Syne Mono',monospace;font-size:10px;
+  letter-spacing:0.04em;border:1px solid;line-height:1.2;
+  position:relative;
+}
+
+.av-viji{background:rgba(201,168,76,0.1);border-color:var(--gold-border);color:var(--gold-hi)}
+.av-mindra{background:rgba(113,131,118,0.08);border-color:var(--sage-border);color:#9ab09f}
+.av-astra{background:rgba(20,22,28,0.9);border-color:var(--border-hi);color:var(--ghost)}
+.av-leaf{background:rgba(11,12,15,0.9);border-color:var(--border);color:var(--muted);font-size:9px}
+
+.av-indent{
+  margin-left:20px;
+  padding-left:16px;
+  border-left:1px solid var(--border-hi);
+  margin-bottom:6px;
+}
+
+/* Stack panel */
+.stack-panel{
+  background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;
+}
+
+.stack-row{
+  display:flex;align-items:center;gap:0;
+  border-bottom:1px solid var(--border);
+}
+.stack-row:last-child{border-bottom:none}
+
+.stack-key{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.1em;color:var(--muted);
+  text-transform:uppercase;
+  padding:14px 16px;width:90px;flex-shrink:0;
+  border-right:1px solid var(--border);
+}
+
+.stack-chips{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px}
+
+.chip{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.06em;
+  color:var(--mid);border:1px solid var(--border-hi);
+  padding:4px 10px;border-radius:var(--r);
+  transition:border-color 0.2s,color 0.2s;
+}
+.chip:hover{border-color:var(--gold-border);color:var(--gold)}
+
+/* Feature list */
+.feat-list{list-style:none;margin-top:36px}
+.feat-item{
+  display:flex;align-items:flex-start;gap:14px;
+  font-size:13px;font-weight:400;color:var(--subtle);
+  padding:14px 0;border-bottom:1px solid var(--border);
+}
+.feat-item:last-child{border-bottom:none}
+.feat-mark{
+  width:16px;height:16px;border-radius:50%;flex-shrink:0;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  display:flex;align-items:center;justify-content:center;
+  margin-top:2px;
+  font-family:'Syne Mono',monospace;font-size:8px;color:var(--gold);
+}
+
+/* ── GOVERNANCE TABLE ── */
+.gov-section{
+  background:var(--surface);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+
+/* Rail */
+.gov-rail{
+  display:flex;align-items:stretch;gap:0;
+  margin-top:60px;
+  border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;
+}
+
+.gov-rail-item{
+  flex:1;padding:32px 28px;
+  border-right:1px solid var(--border);
+  position:relative;
+  background:var(--base);
+  transition:background 0.2s;
+}
+.gov-rail-item:last-child{border-right:none}
+.gov-rail-item:hover{background:var(--lift)}
+
+.gov-rail-item::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--gold);opacity:0;transition:opacity 0.2s;
+}
+.gov-rail-item:hover::before{opacity:1}
+
+.gov-ref{
+  font-family:'Syne Mono',monospace;
+  font-size:10px;letter-spacing:0.08em;
+  color:var(--gold);margin-bottom:14px;
+}
+
+.gov-name{
+  font-size:13px;font-weight:600;
+  color:var(--ivory);margin-bottom:10px;
+  line-height:1.3;letter-spacing:-0.1px;
+}
+
+.gov-desc{
+  font-size:11px;font-weight:400;
+  color:var(--subtle);line-height:1.75;
+}
+
+/* ── FOUNDER STRIP ── */
+.founder-strip{
+  padding:80px 52px;
+  display:flex;align-items:center;gap:60px;
+  border-top:1px solid var(--border);
+  background:var(--void);
+  position:relative;overflow:hidden;
+}
+
+.founder-strip::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,transparent,var(--gold),transparent);
+}
+
+.founder-logo{width:72px;height:72px;flex-shrink:0;opacity:0.9}
+
+.founder-divider{
+  width:1px;height:80px;background:var(--border);flex-shrink:0;
+}
+
+.founder-text{}
+
+.founder-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:400;color:var(--white);
+  letter-spacing:-0.3px;margin-bottom:4px;
+}
+
+.founder-title{
+  font-size:12px;font-weight:400;color:var(--subtle);
+  letter-spacing:0.04em;margin-bottom:12px;
+}
+
+.founder-link{
+  font-family:'Syne Mono',monospace;
+  font-size:11px;letter-spacing:0.06em;
+  color:var(--gold);text-decoration:none;
+  border-bottom:1px solid var(--gold-border);
+  padding-bottom:1px;
+  transition:color 0.2s,border-color 0.2s;
+}
+.founder-link:hover{color:var(--gold-hi);border-color:var(--gold)}
+
+.founder-stats{
+  display:flex;gap:48px;margin-left:auto;flex-shrink:0;
+}
+
+.f-stat{}
+.f-stat-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:36px;font-weight:300;color:var(--gold-hi);
+  line-height:1;letter-spacing:-1px;
+}
+.f-stat-l{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.1em;color:var(--muted);
+  text-transform:uppercase;margin-top:4px;
+}
+
+/* ── CTA ── */
+.cta-section{
+  padding:140px 52px;
+  text-align:center;
+  position:relative;overflow:hidden;
+  background:var(--base);
+}
+
+.cta-bg-logo{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:600px;height:600px;
+  opacity:0.025;pointer-events:none;
+}
+
+.cta-bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,black 20%,transparent 80%);
+}
+
+.cta-h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,5vw,68px);
+  font-weight:300;letter-spacing:-1px;
+  color:var(--white);line-height:1.08;
+  margin-bottom:20px;
+  max-width:680px;margin-left:auto;margin-right:auto;
+  position:relative;
+}
+
+.cta-h2 em{font-style:italic;color:var(--gold-hi)}
+
+.cta-body{
+  font-size:15px;font-weight:400;
+  color:var(--muted);margin-bottom:52px;
+  position:relative;
+}
+
+.cta-actions{
+  display:flex;justify-content:center;gap:16px;flex-wrap:wrap;
+  position:relative;
+}
+
+/* ── FOOTER ── */
+footer{
+  padding:32px 52px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--border);
+  background:var(--void);
+}
+
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-mark{width:26px;height:26px;opacity:0.45}
+.footer-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;letter-spacing:0.1em;
+  color:var(--muted);text-transform:uppercase;
+}
+
+.footer-mono{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:0.1em;
+  color:var(--border-hi);text-transform:uppercase;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal{
+  opacity:0;transform:translateY(28px);
+  transition:opacity 0.65s ease,transform 0.65s ease;
+}
+.reveal.on{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:0.08s}
+.reveal-delay-2{transition-delay:0.16s}
+.reveal-delay-3{transition-delay:0.24s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <svg class="nav-mark" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="200" fill="none" opacity="0.8" r="160" stroke="#718376" stroke-width="4"/>
+      <circle cx="200" cy="200" fill="none" r="130" stroke="#daa520" stroke-width="6"/>
+      <line opacity="0.4" stroke="#94a3b8" stroke-width="1.5" x1="80" x2="320" y1="160" y2="160"/>
+      <circle cx="80" cy="160" fill="#94a3b8" opacity="0.4" r="3"/>
+      <circle cx="320" cy="160" fill="#94a3b8" opacity="0.4" r="3"/>
+      <line opacity="0.4" stroke="#94a3b8" stroke-width="1.5" x1="80" x2="320" y1="240" y2="240"/>
+      <circle cx="80" cy="240" fill="#94a3b8" opacity="0.4" r="3"/>
+      <circle cx="320" cy="240" fill="#94a3b8" opacity="0.4" r="3"/>
+      <line stroke="#cbd5e1" stroke-width="2.5" x1="50" x2="350" y1="200" y2="200"/>
+      <circle cx="50" cy="200" fill="#cbd5e1" r="4"/>
+      <circle cx="350" cy="200" fill="#cbd5e1" r="4"/>
+      <g fill="none" stroke="#f88379" stroke-width="1.5" transform="translate(200,200)">
+        <path d="M-100 0 C-100 0,-40 -60,0 -60 C40 -60,100 0,100 0 C100 0,40 60,0 60 C-40 60,-100 0,-100 0 Z"/>
+        <circle cx="0" cy="0" r="35"/>
+        <circle cx="0" cy="0" fill="#cbd5e1" r="12" stroke="none"/>
+      </g>
+      <g transform="translate(200,200)">
+        <path d="M0 -130 L0 -180" stroke="#cbd5e1" stroke-linecap="round" stroke-width="4"/>
+        <path d="M0 -185 L20 -155 L0 -165 L-20 -155 Z" fill="#cbd5e1"/>
+      </g>
+    </svg>
+    <span class="nav-name">Olivine</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#platform">Platform</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#governance">Governance</a></li>
+    <li><a href="#contact" class="nav-cta">Investor Deck</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-orb"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-pip"></span>
+      AI-Native Enterprise Platform &nbsp;·&nbsp; Chennai, India &nbsp;·&nbsp; Est. 2024
+    </div>
+
+    <h1 class="hero-h1">Governed <em>AI</em><br>Enterprise</h1>
+    <div class="hero-h1-sub">Built for Production.<br>Not Prototypes.</div>
+
+    <p class="hero-body">
+      Olivine architects multi-tenant, AI-orchestrated ERP platforms under structured governance. Every module. Every agent. Every deployment — accountable, traceable, enterprise-grade.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="sendPrompt('Tell me about the Olivine platform — architecture, modules, and investment opportunity')">
+        Request Investor Deck
+      </button>
+      <button class="btn-ghost" onclick="sendPrompt('Walk me through the Olivine governance model and agent hierarchy')">
+        View Architecture
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-logo-display">
+    <div class="logo-ring-wrap">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" fill="none" opacity="0.8" r="160" stroke="#718376" stroke-width="4"/>
+        <circle cx="200" cy="200" fill="none" r="130" stroke="#daa520" stroke-width="6"/>
+        <line opacity="0.4" stroke="#94a3b8" stroke-width="1.5" x1="80" x2="320" y1="160" y2="160"/>
+        <circle cx="80" cy="160" fill="#94a3b8" opacity="0.4" r="3"/>
+        <circle cx="320" cy="160" fill="#94a3b8" opacity="0.4" r="3"/>
+        <line opacity="0.4" stroke="#94a3b8" stroke-width="1.5" x1="80" x2="320" y1="240" y2="240"/>
+        <circle cx="80" cy="240" fill="#94a3b8" opacity="0.4" r="3"/>
+        <circle cx="320" cy="240" fill="#94a3b8" opacity="0.4" r="3"/>
+        <line stroke="#cbd5e1" stroke-width="2.5" x1="50" x2="350" y1="200" y2="200"/>
+        <circle cx="50" cy="200" fill="#cbd5e1" r="4"/>
+        <circle cx="350" cy="200" fill="#cbd5e1" r="4"/>
+        <g fill="none" stroke="#f88379" stroke-width="1.5" transform="translate(200,200)">
+          <path d="M-100 0 C-100 0,-40 -60,0 -60 C40 -60,100 0,100 0 C100 0,40 60,0 60 C-40 60,-100 0,-100 0 Z"/>
+          <circle cx="0" cy="0" r="35"/>
+          <circle cx="0" cy="0" fill="#cbd5e1" r="12" stroke="none"/>
+        </g>
+        <g transform="translate(200,200)">
+          <path d="M0 -130 L0 -180" stroke="#cbd5e1" stroke-linecap="round" stroke-width="4"/>
+          <path d="M0 -185 L20 -155 L0 -165 L-20 -155 Z" fill="#cbd5e1"/>
+        </g>
+      </svg>
+    </div>
+    <div class="logo-caption">
+      <div class="logo-caption-name">Olivine</div>
+      <div class="logo-caption-sub">AI-Orchestrated Enterprise Platform</div>
+    </div>
+  </div>
+</div>
+
+<!-- METRICS -->
+<div class="metrics reveal">
+  <div class="metric">
+    <div class="metric-n">100+</div>
+    <div class="metric-l">Enterprise<br>Modules</div>
+  </div>
+  <div class="metric">
+    <div class="metric-n">20yr</div>
+    <div class="metric-l">Delivery<br>Experience</div>
+  </div>
+  <div class="metric">
+    <div class="metric-n">3–5×</div>
+    <div class="metric-l">AI-Accelerated<br>Velocity</div>
+  </div>
+  <div class="metric">
+    <div class="metric-n">60+</div>
+    <div class="metric-l">Enterprise<br>Rollouts</div>
+  </div>
+</div>
+
+<!-- LIVE PROOF STRIP -->
+<div class="proof-strip reveal">
+  <div class="proof-label">Live in Production</div>
+  <div class="proof-links">
+    <div class="proof-link">
+      <span class="proof-dot"></span>
+      <div>
+        <div class="proof-url">vijim.ai</div>
+        <div class="proof-desc">AI-Orchestrated Personal Platform</div>
+      </div>
+    </div>
+    <div class="proof-link">
+      <span class="proof-dot"></span>
+      <div>
+        <div class="proof-url">propertism.in</div>
+        <div class="proof-desc">Realty Platform · AWS · Bilingual</div>
+      </div>
+    </div>
+    <div class="proof-link">
+      <span class="proof-dot"></span>
+      <div>
+        <div class="proof-url">jobradar · AWS EB</div>
+        <div class="proof-desc">HRM Job Aggregation · Apify MCP</div>
+      </div>
+    </div>
+    <div class="proof-link">
+      <span class="proof-dot"></span>
+      <div>
+        <div class="proof-url">viji.olivine.co.in</div>
+        <div class="proof-desc">Architect Portfolio · Live</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORM -->
+<section id="platform">
+  <div class="s-eye reveal">What We Build</div>
+  <h2 class="s-h2 reveal">One Governed Platform.<br><em>Every</em> Enterprise Function.</h2>
+  <p class="s-body reveal">Each module shares a unified data model, a single architecture layer, and one change control framework. Not a collection of tools — a governed system.</p>
+
+  <div class="p-grid reveal">
+    <div class="p-card">
+      <div class="p-mod">Module · Retail</div>
+      <div class="p-name">Olivine Retail ERP</div>
+      <div class="p-desc">Unified POS, inventory, finance and HRM with metadata-driven multi-tenant architecture and AI orchestration at the core.</div>
+      <div class="p-live"><span class="live-dot"></span>Production Ready</div>
+    </div>
+    <div class="p-card">
+      <div class="p-mod">Module · HRM</div>
+      <div class="p-name">Human Resource Management</div>
+      <div class="p-desc">AI-powered HRM with JobRadar — multi-source job aggregation targeting Indeed, LinkedIn, Naukri and RemoteOK via Apify MCP.</div>
+      <div class="p-live"><span class="live-dot"></span>Live · AWS Elastic Beanstalk</div>
+    </div>
+    <div class="p-card">
+      <div class="p-mod">Module · Finance</div>
+      <div class="p-name">Financial Management System</div>
+      <div class="p-desc">Structured ledger architecture with real-time BI pipelines, multi-entity consolidation and governed reporting workflows.</div>
+      <div class="p-live"><span class="live-dot"></span>In Delivery</div>
+    </div>
+    <div class="p-card">
+      <div class="p-mod">Module · CRM</div>
+      <div class="p-name">Customer Relationship Management</div>
+      <div class="p-desc">Multi-tenant CRM with AI-enriched customer intelligence, structured engagement workflows and DIT-validated pipelines.</div>
+      <div class="p-live"><span class="live-dot"></span>In Delivery</div>
+    </div>
+    <div class="p-card">
+      <div class="p-mod">Module · Procurement</div>
+      <div class="p-name">Procurement Management</div>
+      <div class="p-desc">Full-cycle procurement under SCCB governance with behaviour-first DIT validation and structured change control at every gate.</div>
+      <div class="p-live"><span class="live-dot"></span>DIT Validated</div>
+    </div>
+    <div class="p-card">
+      <div class="p-mod">Vertical · Real Estate</div>
+      <div class="p-name">Propertism Realty Platform</div>
+      <div class="p-desc">NRI property management on AWS with bilingual content, multi-timezone coordination and full-stack Django architecture.</div>
+      <div class="p-live"><span class="live-dot"></span>Live · propertism.in</div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture" class="arch-section">
+  <div class="arch-inner">
+    <div>
+      <div class="s-eye reveal">Architecture</div>
+      <h2 class="s-h2 reveal">Named Multi-Agent Governance.<br>Not a <em>Chatbot Layer.</em></h2>
+      <p class="s-body reveal">Every module is built and governed by a named hierarchy of specialised AI agents under SCCB change control. Each agent has defined scope, accountability and handoff protocols — producing enterprise-grade outputs with traceable governance.</p>
+
+      <ul class="feat-list reveal">
+        <li class="feat-item"><span class="feat-mark">&#10003;</span>SCCB — Single Consolidated Change Board on every delivery unit. No silent execution.</li>
+        <li class="feat-item"><span class="feat-mark">&#10003;</span>DIT validation — behaviour-first testing before any code inspection, on every module.</li>
+        <li class="feat-item"><span class="feat-mark">&#10003;</span>Module isolation — one session, one module. No cross-context contamination.</li>
+        <li class="feat-item"><span class="feat-mark">&#10003;</span>Multi-tenant query scoping enforced at architecture level, not application logic.</li>
+        <li class="feat-item"><span class="feat-mark">&#10003;</span>Claude, Gemini and GPT-4o orchestrated under one unified governance framework.</li>
+      </ul>
+    </div>
+
+    <div class="reveal">
+      <div class="agent-hierarchy">
+        <div class="ah-header">
+          <span class="ah-title">// Agent Command Hierarchy</span>
+          <span class="ah-badge">SCCB Active</span>
+        </div>
+        <div class="ah-body">
+          <div class="av-node">
+            <div class="av-block av-viji">VIJI &nbsp;·&nbsp; Grandmaster Architect</div>
+          </div>
+          <div class="av-indent">
+            <div class="av-node">
+              <div class="av-block av-mindra">MINDRA &nbsp;·&nbsp; Strategic Orchestrator</div>
+            </div>
+            <div class="av-indent">
+              <div class="av-node">
+                <div class="av-block av-astra">ASTRA &nbsp;·&nbsp; Technical Lead Agent</div>
+              </div>
+              <div class="av-indent">
+                <div class="av-node" style="margin-bottom:6px">
+                  <div class="av-block av-leaf">MANTHRAA &nbsp;·&nbsp; POS / Retail Executor</div>
+                </div>
+                <div class="av-node">
+                  <div class="av-block av-leaf">FINRA &nbsp;·&nbsp; FMS / CRM / HRM Executor</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-panel">
+        <div class="ah-header">
+          <span class="ah-title">// Orchestration Stack</span>
+        </div>
+        <div class="stack-row">
+          <div class="stack-key">LLMs</div>
+          <div class="stack-chips">
+            <span class="chip">Claude Sonnet 4.6</span>
+            <span class="chip">Gemini (AG)</span>
+            <span class="chip">GPT-4o</span>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-key">Tooling</div>
+          <div class="stack-chips">
+            <span class="chip">Apify MCP</span>
+            <span class="chip">Kiro</span>
+            <span class="chip">Windsurf</span>
+            <span class="chip">Codex</span>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-key">Backend</div>
+          <div class="stack-chips">
+            <span class="chip">Django 5.0.3</span>
+            <span class="chip">PostgreSQL</span>
+            <span class="chip">REST API</span>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-key">Infra</div>
+          <div class="stack-chips">
+            <span class="chip">AWS Elastic Beanstalk</span>
+            <span class="chip">Nginx</span>
+            <span class="chip">React</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOVERNANCE -->
+<section id="governance" class="gov-section">
+  <div class="s-eye reveal">Governance Framework</div>
+  <h2 class="s-h2 reveal">Policy-Driven<br>from the <em>First Commit.</em></h2>
+  <p class="s-body reveal">Every agent, every module and every delivery cycle operates under named, documented governance policies — not informal conventions. This is the structural moat no AI startup demo can replicate.</p>
+
+  <div class="gov-rail reveal">
+    <div class="gov-rail-item">
+      <div class="gov-ref">FIM-20260217</div>
+      <div class="gov-name">Communication Behaviour Policy</div>
+      <div class="gov-desc">All agents must operate in a named, collaborative environment. Silent execution prohibited. Every action declared. No "done / complete" without evidence.</div>
+    </div>
+    <div class="gov-rail-item">
+      <div class="gov-ref">SCCB-50</div>
+      <div class="gov-name">Premium Brand Positioning Standard</div>
+      <div class="gov-desc">Process discipline over shortcuts. Sequence over excitement. Structure over chaos. Applied to every public-facing Olivine delivery without exception.</div>
+    </div>
+    <div class="gov-rail-item">
+      <div class="gov-ref">DIT Protocol</div>
+      <div class="gov-name">Behaviour-First Test Validation</div>
+      <div class="gov-desc">Test Console validation precedes any code inspection. DIT gates block deployment until behaviour is confirmed at interface level on every module.</div>
+    </div>
+    <div class="gov-rail-item">
+      <div class="gov-ref">SCCB-MI</div>
+      <div class="gov-name">Module Isolation Mandate</div>
+      <div class="gov-desc">One session per module. No cross-module context contamination. Enforced via named session architecture across all active agents and IDEs.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER STRIP -->
+<div class="founder-strip reveal">
+  <svg class="founder-logo" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="200" fill="none" opacity="0.8" r="160" stroke="#718376" stroke-width="4"/>
+    <circle cx="200" cy="200" fill="none" r="130" stroke="#daa520" stroke-width="6"/>
+    <line stroke="#cbd5e1" stroke-width="2.5" x1="50" x2="350" y1="200" y2="200"/>
+    <circle cx="50" cy="200" fill="#cbd5e1" r="4"/>
+    <circle cx="350" cy="200" fill="#cbd5e1" r="4"/>
+    <g fill="none" stroke="#f88379" stroke-width="1.5" transform="translate(200,200)">
+      <path d="M-100 0 C-100 0,-40 -60,0 -60 C40 -60,100 0,100 0 C100 0,40 60,0 60 C-40 60,-100 0,-100 0 Z"/>
+      <circle cx="0" cy="0" r="35"/>
+      <circle cx="0" cy="0" fill="#cbd5e1" r="12" stroke="none"/>
+    </g>
+    <g transform="translate(200,200)">
+      <path d="M0 -130 L0 -180" stroke="#cbd5e1" stroke-linecap="round" stroke-width="4"/>
+      <path d="M0 -185 L20 -155 L0 -165 L-20 -155 Z" fill="#cbd5e1"/>
+    </g>
+  </svg>
+
+  <div class="founder-divider"></div>
+
+  <div class="founder-text">
+    <div class="founder-name">Viji Munuswamy</div>
+    <div class="founder-title">Enterprise AI Systems Architect &nbsp;·&nbsp; Chennai, India</div>
+    <a class="founder-link" href="https://viji.olivine.co.in" target="_blank">viji.olivine.co.in &nbsp;&#8599;</a>
+  </div>
+
+  <div class="founder-stats">
+    <div class="f-stat">
+      <div class="f-stat-n">20</div>
+      <div class="f-stat-l">Years<br>Enterprise</div>
+    </div>
+    <div class="f-stat">
+      <div class="f-stat-n">60+</div>
+      <div class="f-stat-l">Rollouts<br>Delivered</div>
+    </div>
+    <div class="f-stat">
+      <div class="f-stat-n">8</div>
+      <div class="f-stat-l">Months<br>Building Olivine</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section id="contact" class="cta-section">
+  <div class="cta-bg-grid"></div>
+  <svg class="cta-bg-logo" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="200" fill="none" opacity="0.8" r="160" stroke="#718376" stroke-width="4"/>
+    <circle cx="200" cy="200" fill="none" r="130" stroke="#daa520" stroke-width="6"/>
+    <line stroke="#cbd5e1" stroke-width="2.5" x1="50" x2="350" y1="200" y2="200"/>
+    <g fill="none" stroke="#f88379" stroke-width="1.5" transform="translate(200,200)">
+      <path d="M-100 0 C-100 0,-40 -60,0 -60 C40 -60,100 0,100 0 C100 0,40 60,0 60 C-40 60,-100 0,-100 0 Z"/>
+      <circle cx="0" cy="0" r="35"/>
+      <circle cx="0" cy="0" fill="#cbd5e1" r="12" stroke="none"/>
+    </g>
+    <g transform="translate(200,200)">
+      <path d="M0 -130 L0 -180" stroke="#cbd5e1" stroke-linecap="round" stroke-width="4"/>
+      <path d="M0 -185 L20 -155 L0 -165 L-20 -155 Z" fill="#cbd5e1"/>
+    </g>
+  </svg>
+
+  <div class="s-eye reveal" style="justify-content:center">Strategic Investment &amp; Partnership</div>
+  <h2 class="cta-h2 reveal">
+    Ready to back governed AI<br>built for <em>enterprise scale?</em>
+  </h2>
+  <p class="cta-body reveal">We are open to strategic investors and technology partners who understand the difference between enterprise depth and enterprise theatre.</p>
+  <div class="cta-actions reveal">
+    <button class="btn-primary" onclick="sendPrompt('I want to connect with Olivine about investment or strategic partnership')">
+      Request Investor Deck
+    </button>
+    <button class="btn-ghost" onclick="sendPrompt('What is the Olivine investment thesis, market size and product roadmap?')">
+      Investment Thesis
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <svg class="footer-mark" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="200" fill="none" opacity="0.8" r="160" stroke="#718376" stroke-width="4"/>
+      <circle cx="200" cy="200" fill="none" r="130" stroke="#daa520" stroke-width="6"/>
+      <line stroke="#cbd5e1" stroke-width="2.5" x1="50" x2="350" y1="200" y2="200"/>
+      <g fill="none" stroke="#f88379" stroke-width="1.5" transform="translate(200,200)">
+        <path d="M-100 0 C-100 0,-40 -60,0 -60 C40 -60,100 0,100 0 C100 0,40 60,0 60 C-40 60,-100 0,-100 0 Z"/>
+        <circle cx="0" cy="0" r="35"/><circle cx="0" cy="0" fill="#cbd5e1" r="12" stroke="none"/>
+      </g>
+      <g transform="translate(200,200)">
+        <path d="M0 -130 L0 -180" stroke="#cbd5e1" stroke-linecap="round" stroke-width="4"/>
+        <path d="M0 -185 L20 -155 L0 -165 L-20 -155 Z" fill="#cbd5e1"/>
+      </g>
+    </svg>
+    <span class="footer-name">Olivine Platform</span>
+  </div>
+  <div class="footer-mono">AI-Native &nbsp;·&nbsp; Governed &nbsp;·&nbsp; Enterprise-Grade &nbsp;·&nbsp; Chennai</div>
+  <div style="font-family:'Syne Mono',monospace;font-size:9px;color:var(--muted)">&copy; 2026 Olivine &nbsp;·&nbsp; olivine.co.in</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('on');
+      const siblings=[...e.target.parentElement.querySelectorAll('.reveal:not(.on)')];
+      siblings.forEach((el,i)=>setTimeout(()=>el.classList.add('on'),i*90));
+    }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

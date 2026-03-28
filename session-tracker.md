@@ -5,96 +5,83 @@
 ### Project
 - **Project:** `olivine.co.in`
 - **Path:** `D:\viji\viji-olivine\00current\01olivine`
-- **Primary file edited:** `index.html`
-- **Work mode:** static HTML review via `start index.html`
+- **Primary files:** `index.html`, `explorer.html`
+- **Deployment model:** static site on `S3 + CloudFront`
 
-### Current Goal
-Bring the investor-facing Olivine site closer to the SCCB-53 / SCCB-54 build spec using the content transfer from `viji.olivine.co.in`, while preserving the existing editorial gold/amber visual language.
+### Current State
+- Production site is live at:
+  - `https://www.olivine.co.in/`
+- Apex domain routing is also working to the `www` site.
+- Desktop and mobile smoke checks were completed successfully.
+- Final production commit already exists locally:
+  - `712aa19` — `Launch olivine.co.in production site`
 
-### What Landed
-- Hero CTA replaced with LIVE pill component:
-  - `LIVE` pill
-  - `Explore the Platform`
-  - lime arrow block
-  - tertiary muted text link: `Learn more about the platform ->`
-- Hero module credibility strip added:
-  - `Retail · HRM · CRM · Finance · Procurement`
-- Light-mode section banding introduced across the visible investor flow.
-- Section padding rhythm partially aligned:
-  - hero / platform / governed by design get larger spacing
-  - supporting sections reduced from the earlier over-large spacing
-- New section inserted after metrics:
-  - `How Olivine Delivers`
-  - 4 delivery cards
-- Multi-agent flow updated:
-  - flow order is `Planner -> Agent Seed -> Task Orchestrator -> SCCB Auditor -> Output Seal`
-  - Task Orchestrator visually dominant
-  - connectors use amber `#C8952A`
-- Designed for Production section updated:
-  - orchestration logo strip added from `https://viji.olivine.co.in/static/brand_assets/`
-  - eyebrow label added: `MULTI-MODEL ORCHESTRATION`
-- Identity section reduced for investor view:
-  - visible 4 cards: `Source Processing`, `Logic Assembly`, `Audit Validation`, `Operational Flow`
-  - remaining 3 cards hidden in DOM with a `View all 7 capabilities ->` link
-- Architecture moved into its own separate section after Identity:
-  - 5 capability pillar cards
-  - AI Orchestration card marked as the hero card
-- Governed by Design section replaced with named governance content:
-  - `FIM-20260217`
-  - `SCCB-50+`
-  - `AGENT-HIERARCHY`
-  - monospace hierarchy tree added below cards
-- Pre-footer value strip added:
-  - `For Startups`
-  - `For Investors`
+### What Landed In This Session
+- Completed the investor-grade homepage polish in `index.html`.
+- Added theme reflection across homepage and explorer page.
+- Built the `explorer.html` platform showcase and walkthrough assets.
+- Added the `Core Team` section with the first 3 real members:
+  - `Viji Munuswamy`
+  - `S. Tamilselvan`
+  - `Raja. A`
+- Added founder profile link for member 1.
+- Fixed team anchor behavior so nav `Core Team` lands on the actual team subsection.
+- Updated team photos to circular portraits with subtle double-ring styling.
+- Hid placeholder members `M4`, `M5`, `M6` for now.
+- Fixed metrics/proof-strip issues:
+  - corrected `3-5x`
+  - expanded the proof strip to full width
+- Refined the header logo mark so it reads brighter and cleaner.
 
-### Current Known State
-- The static page is being reviewed locally with:
-  - `Start-Process .\index.html`
-- `index.html` contains the current working build.
-- Default theme behavior was changed to light-first for investor review.
+### Deployment Work Completed
+- Added deployment files:
+  - `deploy.config.ps1`
+  - `deploy-static.ps1`
+  - `deploy-static.bat`
+  - `setup-s3-bucket.ps1`
+  - `setup-s3-bucket.bat`
+  - `DEPLOYMENT.md`
+- Created S3 bucket:
+  - `olivine.co.in`
+- Created CloudFront distribution:
+  - **Distribution ID:** `EZM6CBH3OTKTU`
+  - **CloudFront domain:** `d3g2g3vq02hvwy.cloudfront.net`
+- Attached alias:
+  - `www.olivine.co.in`
+- Uploaded the static site successfully.
+- Updated `deploy.config.ps1` with the live distribution ID.
+- Cleaned temporary deployment JSON files from S3 and added them to deploy excludes.
 
-### Important Notes For Next Session
-- The user reported that before the last pass, 3 gaps remained:
-  1. Governance policy cards still looked generic
-  2. Multi-agent arrows needed amber
-  3. Delivery card number/border polish had not landed
-- Those were patched in the latest pass, but they still need a fresh browser sanity check after reload.
-- If the browser still shows old content, do a hard refresh first.
-- No commit has been made yet.
+### Safe Cleanup Already Done
+- Removed unused tracked files:
+  - `hero-bg.jpg`
+  - `index_backup.html`
+  - `index_clean.html`
+  - `olcore-logo-dark.svg`
+  - `olivine_forum_wire_final.html`
+- Removed empty onboarding extraction folder.
+- Kept deploy/config files for future releases.
 
-### Recommended First Checks Next Time
-1. Open `index.html` and hard refresh.
-2. Verify these sections visually:
-   - Hero CTA and module strip
-   - How Olivine Delivers
-   - Multi-Agent Governance Flow
-   - Governed by Design
-   - Architecture section order after Identity
-3. Confirm the visible section order matches the SCCB Annexure wireframe.
-4. Run final polish before commit if any spacing / copy / card contrast still feels off.
+### Current Known Good State
+- Git branch: `main`
+- Remote: `origin https://github.com/vijaympgs/olivine.git`
+- Production site is serving correctly through the custom domain.
+- Working tree was clean before this tracker update.
 
-### Pending Work
-- Do a full responsive audit at:
-  - `375px`
-  - `768px`
-  - `1280px`
-  - `1440px`
-- Capture section screenshots at `1280px` if needed for PR evidence.
-- Commit the build when approved.
+### Recommended Next Steps
+1. Push the local production commits to GitHub.
+2. Keep using `www.olivine.co.in` as the canonical live URL.
+3. For the next release, use:
+   - `setup-s3-bucket.ps1` only if infrastructure changes
+   - `deploy-static.ps1` for normal static updates
+4. If the team expands, unhide placeholders and replace with real profiles.
 
-### Suggested Commit Titles
-- `SCCB-53 Master Build`
-- or, if continuing from the latest amendment state:
-- `SCCB-54 Amendment C`
-
-### Working Tree Snapshot At Handoff
-- Modified:
-  - `index.html`
-  - `prompt.md`
-- Untracked:
-  - `onboarding_design_ref.png`
-  - `onboarding_exported.html`
-  - `onboarding_profile.jpg`
-  - `session-tracker.md`
-
+### Notes For Next Session
+- If any deployment update is needed, start from `deploy.config.ps1` and `DEPLOYMENT.md`.
+- If homepage changes are made, re-run a quick smoke test on:
+  - homepage
+  - theme toggle
+  - `Explore Platform`
+  - `Core Team`
+  - mobile layout
+- The current production baseline is stable and approved.

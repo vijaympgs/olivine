@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Olivine Platform | Governed Enterprise Systems</title>
+  <title>Olivine ERP Platform | Retail, Finance, Operations</title>
   <script>
     (function () {
       try {
@@ -49,9 +49,9 @@
     :root {
       --void: #07080a;
       --base: #0b0c0f;
-      --gold: #c9a84c;
-      --gold-hi: #e2c06a;
-      --sage: #718376;
+      --gold: #C8A95B;
+      --gold-hi: #B89645;
+      --sage: #A3B18A;
       --coral: #e87870;
       --steel: #94a3b8;
       --border: #1e2229;
@@ -65,17 +65,17 @@
     }
 
     [data-theme="light"] {
-      --void: #FAFAF9;
-      --base: #FAFAF9;
-      --surface: #F2EFE8;
-      --nav-bg: rgba(255, 255, 255, 0.96);
-      --ivory: #1A1A1A;
-      --subtle: #1A1A1A;
-      --steel: #9CA3AF;
-      --border: #D4D0C8;
-      --white: #1A1A1A;
-      --lift: #F6F3ED;
-      --gold-hi: #C8952A;
+      --void: #F8F7F4;
+      --base: #F8F7F4;
+      --surface: #F1EFEA;
+      --nav-bg: #1C1F26;
+      --ivory: #1C1F26;
+      --subtle: #5A5F6A;
+      --steel: #8A9099;
+      --border: #D6D3CD;
+      --white: #1C1F26;
+      --lift: #FFFFFF;
+      --gold-hi: #B89645;
     }
 
     body {
@@ -100,7 +100,7 @@
       justify-content: space-between;
       padding: 0 52px;
       height: 72px;
-      background: rgba(7, 8, 10, 0.95);
+      background: #1C1F26;
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -108,7 +108,7 @@
     }
 
     [data-theme="light"] nav {
-      background: rgba(30, 34, 41, 0.92);
+      background: #1C1F26;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
@@ -205,21 +205,43 @@
     }
 
     .nav-links a {
+      position: relative;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.12em;
-      color: rgba(255, 255, 255, 0.75);
+      color: #D1D5DB;
       text-decoration: none;
       text-transform: uppercase;
       transition: color 0.2s;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -10px;
+      height: 2px;
+      border-radius: 999px;
+      background: #C8A95B;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.2s ease;
     }
 
     .nav-links a:hover {
       color: #ffffff;
     }
 
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after,
+    .nav-links a[aria-current="page"]::after,
+    .nav-links a.is-active::after {
+      transform: scaleX(1);
+    }
+
     [data-theme="light"] .nav-links a {
-      color: rgba(255, 255, 255, 0.75);
+      color: #D1D5DB;
     }
 
     [data-theme="light"] .nav-links a:hover {
@@ -281,25 +303,27 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       line-height: 1;
-      color: #07080a;
-      background: var(--gold);
+      color: #FFFFFF;
+      background: #C8A95B;
       padding: 8px 20px;
-      border-radius: 3px;
+      border-radius: 8px;
       text-transform: uppercase;
       border: none;
       cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.2s ease;
       text-decoration: none;
       white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(200, 169, 91, 0.25);
     }
 
     .nav-cta:hover {
-      background: var(--gold-hi);
+      background: #B89645;
       transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(200, 169, 91, 0.3);
     }
 
     [data-theme="light"] .nav-cta {
-      color: #07080a;
+      color: #FFFFFF;
     }
 
     /* Hero */
@@ -327,6 +351,7 @@
         linear-gradient(180deg, rgba(250, 248, 243, 0.98), rgba(242, 239, 232, 0.98));
     }
 
+    .hero-bg-grid,
     .hero-grid {
       position: absolute;
       inset: 0;
@@ -400,6 +425,17 @@
     .hero-diag svg {
       width: 100%;
       height: 100%;
+    }
+
+    .hero-shell {
+      position: relative;
+      z-index: 2;
+      width: min(1400px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(320px, 0.96fr);
+      align-items: center;
+      gap: 44px;
     }
 
     /* Problem Section */
@@ -555,8 +591,8 @@
 
     .hero-content {
       position: relative;
-      z-index: 2;
-      max-width: 820px;
+      z-index: 3;
+      max-width: 760px;
       padding-top: 6px;
     }
 
@@ -702,6 +738,45 @@
       max-width: 720px;
     }
 
+    .hero-platform-list {
+      display: grid;
+      gap: 10px;
+      margin: 0 0 26px;
+      max-width: 640px;
+    }
+
+    .hero-platform-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: #D6DBE4;
+      font-size: clamp(13px, 1.25vw, 15px);
+      line-height: 1.55;
+    }
+
+    .hero-platform-item strong {
+      color: #F5F5F5;
+      font-weight: 600;
+    }
+
+    .hero-platform-dot {
+      width: 10px;
+      height: 10px;
+      margin-top: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--gold-hi), rgba(201, 168, 76, 0.36));
+      box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.12);
+    }
+
+    [data-theme="light"] .hero-platform-item {
+      color: #4B5563;
+    }
+
+    [data-theme="light"] .hero-platform-item strong {
+      color: #111827;
+    }
+
     .hero-proof {
       margin-bottom: 20px;
       font-family: 'Syne Mono', monospace;
@@ -736,6 +811,270 @@
     .hero .btn-ghost:hover {
       background: rgba(255, 255, 255, 0.04);
       border-color: #C8952A;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .hero-visual-panel {
+      position: relative;
+      width: min(100%, 560px);
+      padding: 26px;
+      border-radius: 30px;
+      overflow: hidden;
+      border: 1px solid rgba(201, 168, 76, 0.16);
+      background:
+        radial-gradient(circle at top right, rgba(201, 168, 76, 0.12), transparent 34%),
+        linear-gradient(180deg, rgba(17, 24, 39, 0.94), rgba(8, 12, 20, 0.96));
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .hero-visual-panel::before {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      pointer-events: none;
+    }
+
+    [data-theme="light"] .hero-visual-panel {
+      border-color: rgba(201, 168, 76, 0.2);
+      background:
+        radial-gradient(circle at top right, rgba(201, 168, 76, 0.14), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(242, 239, 232, 0.98));
+      box-shadow: 0 20px 44px rgba(15, 23, 42, 0.1);
+    }
+
+    [data-theme="light"] .hero-visual-panel::before {
+      border-color: rgba(17, 24, 39, 0.07);
+    }
+
+    .hero-panel-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .hero-panel-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(245, 245, 245, 0.74);
+    }
+
+    .hero-panel-state {
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #F6E7B8;
+      background: rgba(201, 168, 76, 0.12);
+      border: 1px solid rgba(201, 168, 76, 0.22);
+    }
+
+    [data-theme="light"] .hero-panel-label {
+      color: rgba(55, 65, 81, 0.82);
+    }
+
+    [data-theme="light"] .hero-panel-state {
+      color: #8A651F;
+      background: rgba(201, 168, 76, 0.12);
+    }
+
+    .hero-panel-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.16fr) minmax(180px, 0.84fr);
+      gap: 18px;
+    }
+
+    .hero-feature-card,
+    .hero-service-card {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.045);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 20px;
+    }
+
+    [data-theme="light"] .hero-feature-card,
+    [data-theme="light"] .hero-service-card {
+      border-color: rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .hero-feature-card.primary {
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-feature-kicker {
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9FB3D1;
+      margin-bottom: 12px;
+    }
+
+    .hero-feature-title {
+      font-size: clamp(20px, 2.2vw, 28px);
+      line-height: 1.08;
+      color: #F8FAFC;
+      margin-bottom: 14px;
+    }
+
+    .hero-feature-copy {
+      color: #BAC4D5;
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .hero-feature-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .hero-feature-metric {
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .hero-feature-value {
+      display: block;
+      font-size: 19px;
+      font-weight: 700;
+      color: #F8FAFC;
+      margin-bottom: 4px;
+    }
+
+    .hero-feature-label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #97A6BA;
+      line-height: 1.45;
+    }
+
+    [data-theme="light"] .hero-feature-kicker {
+      color: #6B7280;
+    }
+
+    [data-theme="light"] .hero-feature-title,
+    [data-theme="light"] .hero-feature-value {
+      color: #111827;
+    }
+
+    [data-theme="light"] .hero-feature-copy {
+      color: #4B5563;
+    }
+
+    [data-theme="light"] .hero-feature-metric {
+      background: rgba(248, 250, 252, 0.92);
+      border-color: rgba(148, 163, 184, 0.16);
+    }
+
+    [data-theme="light"] .hero-feature-label {
+      color: #6B7280;
+    }
+
+    .hero-service-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-service-card {
+      min-height: 84px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .hero-service-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #F8FAFC;
+    }
+
+    .hero-service-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(201, 168, 76, 0.12);
+      color: var(--gold-hi);
+      font-size: 15px;
+      border: 1px solid rgba(201, 168, 76, 0.18);
+    }
+
+    .hero-service-copy {
+      font-size: 12px;
+      line-height: 1.55;
+      color: #AEB9CA;
+    }
+
+    [data-theme="light"] .hero-service-title {
+      color: #111827;
+    }
+
+    [data-theme="light"] .hero-service-copy {
+      color: #4B5563;
+    }
+
+    .hero-platform-ribbon {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .hero-platform-chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #D8E0ED;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme="light"] .hero-platform-chip {
+      color: #374151;
+      background: rgba(255, 255, 255, 0.72);
+      border-color: rgba(15, 23, 42, 0.08);
     }
 
     .btn-ghost {
@@ -1139,7 +1478,7 @@
       align-items: start;
     }
 
-    /* Agent hierarchy — visual */
+    /* Agent hierarchy â€” visual */
     .agent-hierarchy {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1705,6 +2044,820 @@
       letter-spacing: 0.1em;
       color: var(--border);
       text-transform: uppercase;
+    }
+
+    /* Buyer-first homepage overrides */
+    .hero {
+      min-height: clamp(560px, 78vh, 720px);
+      padding: 108px 52px 76px;
+      border-bottom: none;
+      background:
+        radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.94), transparent 26%),
+        radial-gradient(circle at 82% 18%, rgba(200, 169, 91, 0.08), transparent 24%),
+        linear-gradient(180deg, #F8F7F4 0%, #F1EFEA 100%);
+    }
+
+    .hero-bg-grid {
+      opacity: 0.5;
+      background-image:
+        radial-gradient(rgba(28, 31, 38, 0.03) 0.7px, transparent 0.7px),
+        radial-gradient(rgba(200, 169, 91, 0.025) 0.7px, transparent 0.7px);
+      background-size: 18px 18px, 28px 28px;
+      background-position: 0 0, 9px 9px;
+      animation: none;
+    }
+
+    .hero-shell {
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 540px);
+      gap: 56px;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 620px;
+    }
+
+    .hero-badge {
+      color: #6e755f;
+      background: rgba(255, 255, 255, 0.78);
+      border-color: #D6D3CD;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+    }
+
+    .hero-h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(42px, 5.5vw, 72px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #1C1F26;
+      line-height: 1.03;
+      max-width: 620px;
+      margin-bottom: 20px;
+      text-wrap: balance;
+    }
+
+    .hero-h1 em {
+      font-style: normal;
+      color: rgba(163, 177, 138, 0.8);
+    }
+
+    .hero-body {
+      font-size: clamp(16px, 1.7vw, 18px);
+      color: #5A5F6A;
+      max-width: 560px;
+      line-height: 1.75;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .hero-btn-primary,
+    .hero-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-btn-primary {
+      background: #FFFFFF;
+      color: #1C1F26;
+      border: 1px solid #D6D3CD;
+    }
+
+    .hero-btn-primary:hover {
+      background: #F3F2EE;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero-btn-secondary {
+      background: #C8A95B;
+      color: #FFFFFF;
+      border: 1px solid #C8A95B;
+    }
+
+    .hero-btn-secondary:hover {
+      background: #B89645;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero-meta {
+      margin-top: 0;
+      gap: 14px;
+      max-width: 620px;
+    }
+
+    .hero-proof-anchor {
+      color: #5A5F6A;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.7;
+    }
+
+    .hero-proof-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-proof-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: #EDEBE6;
+      border: 1px solid #D6D3CD;
+      color: #4B4F58;
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .hero-proof-pill:hover {
+      background: #E3E0D9;
+      color: #1C1F26;
+    }
+
+    .hero-media {
+      position: relative;
+      min-height: 520px;
+    }
+
+    .hero-media-card {
+      position: absolute;
+      overflow: hidden;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 10px;
+      border: 1px solid #E6E3DC;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .hero-media-link {
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+
+    .hero-media-link:hover,
+    .hero-media-link:focus-visible {
+      border-color: rgba(200, 169, 91, 0.72);
+      box-shadow: 0 26px 46px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero-media-link:hover .hero-media-tag,
+    .hero-media-link:focus-visible .hero-media-tag {
+      background: rgba(200, 169, 91, 0.96);
+      color: #FFFFFF;
+      border-color: rgba(200, 169, 91, 0.96);
+    }
+
+    .hero-media-card img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      filter: brightness(0.95) saturate(0.96);
+    }
+
+    .hero-media-tag {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #1C1F26;
+      border: 1px solid #E6E3DC;
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-media-login {
+      width: 269px;
+      height: auto;
+      top: -2px;
+      left: -10px;
+      z-index: 7;
+      transform: none;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+      transition: transform 0.24s ease, filter 0.24s ease;
+      animation: hero-login-float 3.8s ease-in-out infinite;
+    }
+
+    .hero-media-login::before {
+      content: "";
+      position: absolute;
+      inset: -18px -20px -18px -20px;
+      border: 1px solid rgba(200, 169, 91, 0.38);
+      box-shadow:
+        0 0 0 1px rgba(200, 169, 91, 0.06),
+        0 0 26px rgba(200, 169, 91, 0.22);
+      opacity: 0.88;
+      z-index: -2;
+      pointer-events: none;
+      animation: hero-login-aura 3.6s ease-in-out infinite;
+    }
+
+    .hero-media-login::after {
+      content: "";
+      position: absolute;
+      inset: -9px -11px -9px -11px;
+      border: 1px solid rgba(200, 169, 91, 0.62);
+      box-shadow:
+        0 0 18px rgba(200, 169, 91, 0.2),
+        0 0 34px rgba(200, 169, 91, 0.14);
+      opacity: 0.96;
+      z-index: -1;
+      pointer-events: none;
+      animation: hero-login-aura 3.6s ease-in-out infinite reverse;
+    }
+
+    @keyframes hero-login-float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    @keyframes hero-login-aura {
+      0%,
+      100% {
+        opacity: 0.76;
+        transform: scale(0.98);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.04);
+      }
+    }
+
+    .hero-media-login.hero-media-link:hover,
+    .hero-media-login.hero-media-link:focus-visible {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    .hero-media-login img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 0;
+      filter: none;
+      box-shadow:
+        0 22px 44px rgba(28, 31, 38, 0.16),
+        0 0 18px rgba(200, 169, 91, 0.08);
+      transition: box-shadow 0.24s ease;
+    }
+
+    .hero-media-login.hero-media-link:hover img,
+    .hero-media-login.hero-media-link:focus-visible img {
+      box-shadow:
+        0 28px 56px rgba(28, 31, 38, 0.22),
+        0 0 24px rgba(200, 169, 91, 0.14);
+    }
+
+    .hero-media-login .hero-media-tag {
+      display: none;
+    }
+
+    .hero-media-retail {
+      width: 316px;
+      height: 220px;
+      top: 56px;
+      left: 132px;
+      z-index: 2;
+      transform: scale(0.96);
+    }
+
+    .hero-media-customer {
+      width: 206px;
+      height: 148px;
+      top: 24px;
+      right: 6px;
+      z-index: 5;
+      transform: rotate(3deg) scale(1);
+    }
+
+    .hero-media-item {
+      width: 184px;
+      height: 134px;
+      top: 226px;
+      left: 22px;
+      z-index: 3;
+      transform: rotate(-2deg) scale(0.92);
+    }
+
+    .hero-media-po {
+      width: 248px;
+      height: 168px;
+      top: 246px;
+      left: 190px;
+      z-index: 4;
+      transform: scale(0.96);
+    }
+
+    .hero-media-pos-open {
+      width: 176px;
+      height: 118px;
+      bottom: 20px;
+      right: 126px;
+      z-index: 5;
+      transform: rotate(-3deg) scale(1);
+    }
+
+    .hero-media-pos {
+      width: 206px;
+      height: 150px;
+      bottom: 54px;
+      right: 0;
+      z-index: 6;
+      transform: rotate(4deg) scale(1);
+    }
+
+    .hero-media-item img {
+      filter: brightness(0.93) saturate(0.94) blur(1px);
+    }
+
+    .buyer-stats-section {
+      padding: 28px 52px 0;
+      background: #F8F7F4;
+    }
+
+    .buyer-stats-grid,
+    .buyer-section-inner,
+    .buyer-cta-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .buyer-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .buyer-stat-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px;
+      border: 1px solid #E6E3DC;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.06);
+    }
+
+    .buyer-stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      color: #1C1F26;
+      margin-bottom: 8px;
+    }
+
+    .buyer-stat-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1C1F26;
+      margin-bottom: 6px;
+    }
+
+    .buyer-stat-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #5A5F6A;
+    }
+
+    .buyer-section {
+      padding: 84px 52px;
+      background: #F8F7F4;
+    }
+
+    .buyer-section.alt {
+      background: #F1EFEA;
+    }
+
+    .buyer-kicker {
+      font-family: 'Syne Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8A9099;
+      margin-bottom: 16px;
+    }
+
+    .buyer-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(34px, 4vw, 54px);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      color: #1C1F26;
+      line-height: 1.05;
+      margin-bottom: 16px;
+      max-width: 760px;
+    }
+
+    .buyer-copy {
+      max-width: 620px;
+      font-size: 16px;
+      line-height: 1.75;
+      color: #5A5F6A;
+    }
+
+    .product-grid,
+    .industry-grid,
+    .why-grid,
+    .steps-grid {
+      display: grid;
+      gap: 20px;
+      margin-top: 34px;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .industry-grid,
+    .why-grid,
+    .steps-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .product-card,
+    .industry-card,
+    .why-card,
+    .step-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 28px;
+      border: 1px solid #E6E3DC;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.06);
+    }
+
+    .product-card {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card-title,
+    .industry-card h3,
+    .why-card h3,
+    .step-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: #1C1F26;
+      line-height: 1.18;
+      margin-bottom: 12px;
+    }
+
+    .product-card-text,
+    .industry-card p,
+    .why-card p,
+    .step-card p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: #5A5F6A;
+      max-width: 34ch;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 18px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #C8A95B;
+      text-decoration: none;
+    }
+
+    .card-link:hover {
+      color: #B89645;
+    }
+
+    .ai-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+      gap: 28px;
+      align-items: center;
+      margin-top: 34px;
+      padding: 28px;
+      background: #ffffff;
+      border-radius: 28px;
+      border: 1px solid #E6E3DC;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.06);
+    }
+
+    .ai-copy {
+      font-size: 18px;
+      line-height: 1.75;
+      color: #5A5F6A;
+      margin-bottom: 22px;
+      max-width: 34ch;
+    }
+
+    .ai-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .ai-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #5A5F6A;
+    }
+
+    .ai-list-mark {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ECE8DD;
+      color: #B89645;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    .ai-visual {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid #E6E3DC;
+      background: #F1EFEA;
+      min-height: 340px;
+    }
+
+    .ai-visual img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .step-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ECE8DD;
+      color: #B89645;
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .leader-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px 20px;
+      margin-top: 24px;
+      max-width: 1180px;
+    }
+
+    .leader-card {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .buyer-team-section {
+      padding-top: 56px;
+      padding-bottom: 60px;
+    }
+
+    .buyer-team-section .buyer-copy {
+      max-width: 720px;
+      margin-bottom: 0;
+    }
+
+    .leader-photo {
+      position: relative;
+      height: clamp(280px, 29vw, 390px);
+      overflow: hidden;
+      border-radius: 22px;
+      background: #e8ede9;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.06);
+      margin-bottom: 14px;
+    }
+
+    .leader-photo::before,
+    .leader-photo::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: inherit;
+      z-index: 1;
+    }
+
+    .leader-photo::before {
+      inset: 0;
+      border: 1px solid rgba(31, 111, 94, 0.34);
+    }
+
+    .leader-photo::after {
+      inset: 8px;
+      border: 1px solid rgba(201, 168, 76, 0.42);
+    }
+
+    .leader-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .leader-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: #1C1F26;
+      line-height: 1.15;
+      text-decoration: none;
+      margin-bottom: 8px;
+    }
+
+    .leader-name:hover {
+      color: #C8A95B;
+    }
+
+    .leader-name.is-static:hover {
+      color: #1C1F26;
+    }
+
+    .leader-title {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #5A5F6A;
+      max-width: 28ch;
+    }
+
+    .leader-link-mark {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    @media (max-width: 1100px) {
+      .leader-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .leader-photo {
+        height: clamp(280px, 38vw, 360px);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .buyer-team-section {
+        padding-top: 48px;
+        padding-bottom: 52px;
+      }
+
+      .leader-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .leader-photo {
+        height: clamp(260px, 78vw, 360px);
+      }
+
+      .leader-name {
+        font-size: 20px;
+      }
+    }
+
+    .buyer-cta-section {
+      padding: 92px 52px;
+      background:
+        radial-gradient(circle at 14% 22%, rgba(200, 169, 91, 0.12), transparent 24%),
+        linear-gradient(135deg, #1C1F26 0%, #252A33 100%);
+    }
+
+    .buyer-cta-inner {
+      text-align: center;
+    }
+
+    .buyer-cta-section .buyer-kicker,
+    .buyer-cta-section .buyer-title,
+    .buyer-cta-section .buyer-copy {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .buyer-cta-section .buyer-kicker {
+      color: rgba(255, 255, 255, 0.62);
+    }
+
+    .buyer-cta-section .buyer-title {
+      color: #ffffff;
+    }
+
+    .buyer-cta-section .buyer-copy {
+      color: rgba(255, 255, 255, 0.76);
+      margin-bottom: 28px;
+    }
+
+    .buyer-cta-section .hero-btn-primary {
+      background: #C8A95B;
+      color: #FFFFFF;
+      border-color: #C8A95B;
+    }
+
+    .buyer-cta-section .hero-btn-primary:hover {
+      background: #B89645;
+    }
+
+    .buyer-cta-section .hero-btn-secondary {
+      background: #FFFFFF;
+      color: #1C1F26;
+      border-color: #D6D3CD;
+    }
+
+    .buyer-cta-section .hero-btn-secondary:hover {
+      background: #F3F2EE;
+    }
+
+    .buyer-cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      background: linear-gradient(180deg, #20242c 0%, #181b22 100%);
+      border-top: none;
+    }
+
+    .footer-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .footer-mono {
+      color: rgba(209, 213, 219, 0.68);
     }
 
     /* -- SCROLL REVEAL -- */
@@ -3531,6 +4684,11 @@
         padding: 132px 40px 88px;
       }
 
+      .hero-shell {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+
       .hero-diag {
         width: 360px;
         height: 360px;
@@ -3540,6 +4698,14 @@
 
       .hero-content {
         max-width: 100%;
+      }
+
+      .hero-visual {
+        min-height: auto;
+      }
+
+      .hero-visual-panel {
+        width: 100%;
       }
 
       .prob-grid {
@@ -3621,12 +4787,16 @@
         font-size: 9px;
         letter-spacing: 0.08em;
         border-radius: 4px;
-        box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.2), 0 8px 20px rgba(10, 10, 10, 0.18);
+        box-shadow: 0 4px 12px rgba(200, 169, 91, 0.25);
       }
 
       .hero {
         min-height: auto;
         padding: 76px 20px 40px;
+      }
+
+      .hero-shell {
+        gap: 24px;
       }
 
       .hero-diag {
@@ -3653,7 +4823,7 @@
 
       .hero-body {
         font-size: 0.95rem;
-        line-height: 1.55;
+        line-height: 1.75;
         margin-bottom: 18px;
         max-width: 90vw;
       }
@@ -3663,11 +4833,49 @@
         align-items: stretch;
       }
 
+      .hero-platform-list {
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .hero-platform-item {
+        gap: 10px;
+        font-size: 13px;
+      }
+
       .hero-meta {
         gap: 8px;
         align-items: flex-start;
         flex-direction: column;
         margin-top: 10px;
+      }
+
+      .hero-visual-panel {
+        padding: 18px;
+        border-radius: 24px;
+      }
+
+      .hero-panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 16px;
+      }
+
+      .hero-panel-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-feature-card.primary {
+        min-height: auto;
+      }
+
+      .hero-feature-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-platform-ribbon {
+        gap: 8px;
+        margin-top: 14px;
       }
 
       .cta-live-btn {
@@ -3854,6 +5062,166 @@
         border-top: none;
       }
     }
+
+    @media (max-width: 1200px) {
+      .hero-shell,
+      .ai-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-media {
+        min-height: 460px;
+        max-width: 680px;
+      }
+
+      .hero-media-login {
+        left: 12px;
+      }
+
+      .hero-media-retail {
+        left: 122px;
+      }
+
+      .hero-media-customer {
+        right: 18px;
+      }
+
+      .hero-media-po {
+        left: 176px;
+      }
+
+      .hero-media-pos-open {
+        right: 136px;
+      }
+
+      .buyer-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .industry-grid,
+      .why-grid,
+      .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hero {
+        padding: 88px 20px 44px;
+      }
+
+      .hero-btn-primary,
+      .hero-btn-secondary {
+        width: 100%;
+      }
+
+      .hero-proof-row {
+        gap: 8px;
+      }
+
+      .hero-media {
+        min-height: 470px;
+      }
+
+      .hero-media-card {
+        padding: 8px;
+        border-radius: 18px;
+      }
+
+      .hero-media-card img {
+        border-radius: 12px;
+      }
+
+      .hero-media-tag {
+        left: 12px;
+        bottom: 12px;
+        min-height: 26px;
+        padding: 0 10px;
+        font-size: 9px;
+      }
+
+      .hero-media-login {
+        width: 187px;
+        height: auto;
+        top: 0;
+        left: -2px;
+        padding: 0;
+        border-radius: 0;
+      }
+
+      .hero-media-login img {
+        border-radius: 0;
+      }
+
+      .hero-media-retail {
+        width: 222px;
+        height: 156px;
+        top: 44px;
+        left: 84px;
+      }
+
+      .hero-media-customer {
+        width: 148px;
+        height: 108px;
+        top: 10px;
+        right: 6px;
+      }
+
+      .hero-media-item {
+        width: 138px;
+        height: 104px;
+        top: 206px;
+        left: 10px;
+      }
+
+      .hero-media-po {
+        width: 186px;
+        height: 126px;
+        top: 232px;
+        left: 124px;
+      }
+
+      .hero-media-pos-open {
+        width: 128px;
+        height: 92px;
+        bottom: 12px;
+        right: 102px;
+      }
+
+      .hero-media-pos {
+        width: 142px;
+        height: 104px;
+        bottom: 34px;
+        right: 0;
+      }
+
+      .buyer-stats-section,
+      .buyer-section,
+      .buyer-cta-section {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .buyer-stats-grid,
+      .product-grid,
+      .industry-grid,
+      .why-grid,
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card,
+      .industry-card,
+      .why-card,
+      .step-card,
+      .ai-panel {
+        border-radius: 22px;
+      }
+
+      .buyer-cta-actions {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 
@@ -3876,15 +5244,15 @@
         </g>
       </svg>
       <span class="nav-brand-copy">
-        <span class="nav-kicker">Enterprise Execution Platform</span>
+        <span class="nav-kicker">Unified ERP Platform</span>
         <span class="nav-name">Olivine<span class="nav-dot-in">.co.in</span></span>
       </span>
     </a>
     <ul class="nav-links">
-      <li><a href="#platform">Platform</a></li>
-      <li><a href="javascript:void(0)" onclick="openExplorePreview('nav-explore')">Explore</a></li>
-      <li><a href="#architecture">Architecture</a></li>
-      <li><a href="#governance">Governance</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#industries">Industries</a></li>
+      <li><a href="#why-olivine">Why Olivine</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#team">Core Team</a></li>
     </ul>
     <div class="nav-actions">
@@ -3906,7 +5274,7 @@
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       </button>
-      <a href="javascript:void(0)" onclick="openExplorePreview('header-access')" class="nav-cta">Get Early Access</a>
+      <a href="javascript:void(0)" onclick="openInvestorFlow('header-demo')" class="nav-cta">Request Demo</a>
     </div>
   </nav>
 
@@ -3914,50 +5282,290 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-bg-grid"></div>
-    <div class="hero-diag">
-      <svg viewBox="0 0 800 800" fill="none" opacity="0.6">
-        <circle cx="400" cy="400" r="300" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="10 20" />
-        <circle cx="400" cy="400" r="200" stroke="var(--gold)" stroke-width="0.5" />
-        <path d="M400 100 V700 M100 400 H700" stroke="var(--gold)" stroke-width="0.5" opacity="0.3" />
-        <circle cx="400" cy="400" r="10" fill="var(--gold)" />
-      </svg>
-    </div>
 
-    <div class="hero-content reveal">
-      <div class="hero-badge">System Specification · Governed Architecture</div>
-      <h1 class="hero-h1">
-        From Systems of Record<br>
-        to <em>Systems of Execution.</em>
-      </h1>
-      <p class="hero-body">
-        Olivine turns enterprise systems into governed execution infrastructure.
-      </p>
-      <div class="hero-actions">
-        <a href="javascript:void(0)" onclick="openInvestorFlow('hero-demo')" class="cta-live-btn">
-          <span class="live-pill">LIVE</span>
-          <span class="cta-label">Request a Demo</span>
-          <span class="cta-arrow">&rarr;</span>
-        </a>
+    <div class="hero-shell reveal">
+      <div class="hero-content">
+        <div class="hero-badge">Business-first ERP platform</div>
+        <h1 class="hero-h1">
+          From Systems of Record to<br>
+          <em>Systems of Execution.</em>
+        </h1>
+        <p class="hero-body">
+          Run your retail, operations, finance, and customer lifecycle on one unified execution platform.
+        </p>
+        <div class="hero-actions">
+          <a class="hero-btn-primary" href="#products">Explore Products</a>
+          <a class="hero-btn-secondary" href="javascript:void(0)" onclick="openInvestorFlow('hero-demo')">Request Demo</a>
+        </div>
+        <div class="hero-meta">
+          <div class="hero-proof-anchor">ERP products, data aggregation, custom web, and mobile apps in one connected platform.</div>
+          <div class="hero-proof-row">
+            <span class="hero-proof-pill">Retail and POS</span>
+            <span class="hero-proof-pill">Operations and inventory</span>
+            <span class="hero-proof-pill">Finance and CRM</span>
+            <span class="hero-proof-pill">Custom web and mobile</span>
+          </div>
+        </div>
       </div>
-      <div class="hero-meta">
-        <a id="demo" class="hero-secondary-link" href="javascript:void(0)" onclick="openExplorePreview('hero-explore')">Explore the Platform &rarr;</a>
-        <div class="hero-proof-anchor">100+ Modules &nbsp;&middot;&nbsp; Live in Production &nbsp;&middot;&nbsp; 5 Enterprise Layers</div>
-        <div class="module-strip">
-          <span class="dot" style="background:#3B82F6"></span> Retail
-          <span class="sep">&middot;</span>
-          <span class="dot" style="background:#EF4444"></span> HRM
-          <span class="sep">&middot;</span>
-          <span class="dot" style="background:#A855F7"></span> CRM
-          <span class="sep">&middot;</span>
-          <span class="dot" style="background:#F59E0B"></span> Finance
-          <span class="sep">&middot;</span>
-          <span class="dot" style="background:#10B981"></span> Procurement
+
+      <div class="hero-media">
+      <a class="hero-media-card hero-media-login hero-media-link" href="explorer.html" aria-label="Open Olivine explorer">
+          <img src="explore-assets/walkthrough/0_login.png" alt="Olivine login screen">
+          <span class="hero-media-tag">Login</span>
+        </a>
+        <div class="hero-media-card hero-media-retail">
+          <img src="explore-assets/retail_dashboard.png" alt="Olivine retail dashboard">
+          <span class="hero-media-tag">Retail Now</span>
+        </div>
+        <div class="hero-media-card hero-media-customer">
+          <img src="explore-assets/retail_customer_entry.png" alt="Olivine customer screen">
+          <span class="hero-media-tag">Customer</span>
+        </div>
+        <div class="hero-media-card hero-media-item">
+          <img src="explore-assets/retail_item_master.png" alt="Olivine item master screen">
+          <span class="hero-media-tag">Item</span>
+        </div>
+        <div class="hero-media-card hero-media-po">
+          <img src="explore-assets/retail_purchase_orders.png" alt="Olivine purchase order screen">
+          <span class="hero-media-tag">Purchase Order</span>
+        </div>
+        <div class="hero-media-card hero-media-pos-open">
+          <img src="explore-assets/retail_day_open.png" alt="Olivine point of sale opening screen">
+          <span class="hero-media-tag">POS Open</span>
+        </div>
+        <div class="hero-media-card hero-media-pos">
+          <img src="explore-assets/retail_pos_checkout.png" alt="Olivine point of sale checkout screen">
+          <span class="hero-media-tag">Point of Sale</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="proof-strip" class="proof-strip-section reveal">
+  <section class="buyer-stats-section reveal">
+    <div class="buyer-stats-grid">
+      <div class="buyer-stat-card">
+        <div class="buyer-stat-value">100+</div>
+        <div class="buyer-stat-label">Businesses</div>
+        <div class="buyer-stat-text">Business teams using connected workflows across core operations.</div>
+      </div>
+      <div class="buyer-stat-card">
+        <div class="buyer-stat-value">3-5x</div>
+        <div class="buyer-stat-label">Faster Operations</div>
+        <div class="buyer-stat-text">Less manual follow-up and quicker business decisions across teams.</div>
+      </div>
+      <div class="buyer-stat-card">
+        <div class="buyer-stat-value">60+</div>
+        <div class="buyer-stat-label">Features</div>
+        <div class="buyer-stat-text">Built to support retail, finance, customer, and workforce needs.</div>
+      </div>
+      <div class="buyer-stat-card">
+        <div class="buyer-stat-value">Enterprise</div>
+        <div class="buyer-stat-label">Ready</div>
+        <div class="buyer-stat-text">Designed for scale, control, and day-to-day operational reliability.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products" class="buyer-section reveal">
+    <div class="buyer-section-inner">
+      <div class="buyer-kicker">Platform</div>
+      <h2 class="buyer-title">Explore Olivine Platform</h2>
+      <p class="buyer-copy">Everything you need to run and scale your business.</p>
+
+      <div class="product-grid">
+        <div class="product-card">
+          <h3 class="product-card-title">Retail POS &amp; Billing</h3>
+          <p class="product-card-text">Sell faster with accurate billing, promotions, receipts, and smoother checkout experiences.</p>
+          <a class="card-link" href="javascript:void(0)" onclick="openExplorePreview('product-retail')">Explore &rarr;</a>
+        </div>
+        <div class="product-card">
+          <h3 class="product-card-title">Inventory &amp; Warehouse</h3>
+          <p class="product-card-text">Track stock in real time and keep stores and warehouses aligned with demand.</p>
+          <a class="card-link" href="javascript:void(0)" onclick="openExplorePreview('product-inventory')">Explore &rarr;</a>
+        </div>
+        <div class="product-card">
+          <h3 class="product-card-title">Procurement &amp; Supply Chain</h3>
+          <p class="product-card-text">Manage suppliers, purchasing, and replenishment with fewer delays and better control.</p>
+          <a class="card-link" href="javascript:void(0)" onclick="openExplorePreview('product-procurement')">Explore &rarr;</a>
+        </div>
+        <div class="product-card">
+          <h3 class="product-card-title">Finance &amp; Accounting</h3>
+          <p class="product-card-text">Close faster with approvals, ledgers, and financial visibility in one system.</p>
+          <a class="card-link" href="javascript:void(0)" onclick="openExplorePreview('product-finance')">Explore &rarr;</a>
+        </div>
+        <div class="product-card">
+          <h3 class="product-card-title">CRM &amp; Customer Management</h3>
+          <p class="product-card-text">Keep every customer interaction, follow-up, and relationship view in one place.</p>
+          <a class="card-link" href="javascript:void(0)" onclick="openExplorePreview('product-crm')">Explore &rarr;</a>
+        </div>
+        <div class="product-card">
+          <h3 class="product-card-title">HR &amp; Workforce</h3>
+          <p class="product-card-text">Manage employees, attendance, payroll, and approvals with less admin overhead.</p>
+          <a class="card-link" href="javascript:void(0)" onclick="openExplorePreview('product-hr')">Explore &rarr;</a>
+        </div>
+        <div class="product-card">
+          <h3 class="product-card-title">Analytics &amp; Reporting</h3>
+          <p class="product-card-text">Turn live business data into clear dashboards, trends, and action-ready reports.</p>
+          <a class="card-link" href="javascript:void(0)" onclick="openExplorePreview('product-analytics')">Explore &rarr;</a>
+        </div>
+        <div class="product-card">
+          <h3 class="product-card-title">AI Assistant</h3>
+          <p class="product-card-text">Ask better questions, surface risks faster, and automate routine follow-ups.</p>
+          <a class="card-link" href="#ai-decisions">Explore &rarr;</a>
+        </div>
+        <div class="product-card">
+          <h3 class="product-card-title">App Extensibility</h3>
+          <p class="product-card-text">Launch custom apps and connected workflows on top of the Olivine platform.</p>
+          <a class="card-link" href="javascript:void(0)" onclick="openInvestorFlow('product-app-layer')">Explore &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ai-decisions" class="buyer-section alt reveal">
+    <div class="buyer-section-inner">
+      <div class="buyer-kicker">AI</div>
+      <h2 class="buyer-title">AI Powered Decisions</h2>
+      <div class="ai-panel">
+        <div>
+          <p class="ai-copy">Get insights, alerts, and recommendations that help you act faster and smarter.</p>
+          <ul class="ai-list">
+            <li><span class="ai-list-mark">1</span><span>Smart inventory alerts</span></li>
+            <li><span class="ai-list-mark">2</span><span>Sales predictions</span></li>
+            <li><span class="ai-list-mark">3</span><span>Automated workflows</span></li>
+          </ul>
+        </div>
+        <div class="ai-visual">
+          <img src="explore-assets/walkthrough/03user-permissions-01.png" alt="Olivine user permissions screen">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="industries" class="buyer-section reveal">
+    <div class="buyer-section-inner">
+      <div class="buyer-kicker">Industries</div>
+      <h2 class="buyer-title">Industries We Serve</h2>
+      <div class="industry-grid">
+        <div class="industry-card">
+          <h3>Retail</h3>
+          <p>Run stores, POS, inventory, and customer journeys with better daily control.</p>
+        </div>
+        <div class="industry-card">
+          <h3>Distribution</h3>
+          <p>Keep stock, fulfillment, supplier coordination, and operations moving without gaps.</p>
+        </div>
+        <div class="industry-card">
+          <h3>Manufacturing</h3>
+          <p>Support planning, material movement, and execution visibility across light manufacturing workflows.</p>
+        </div>
+        <div class="industry-card">
+          <h3>Services</h3>
+          <p>Manage customers, teams, billing, and delivery from one connected operating system.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why-olivine" class="buyer-section alt reveal">
+    <div class="buyer-section-inner">
+      <div class="buyer-kicker">Value</div>
+      <h2 class="buyer-title">Why Olivine</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <h3>One Unified Platform</h3>
+          <p>Bring core business functions together instead of managing disconnected systems.</p>
+        </div>
+        <div class="why-card">
+          <h3>Real-Time Visibility</h3>
+          <p>See operations, finance, and customer activity clearly as the business moves.</p>
+        </div>
+        <div class="why-card">
+          <h3>Faster Operations</h3>
+          <p>Reduce manual work and help teams act faster with cleaner workflows.</p>
+        </div>
+        <div class="why-card">
+          <h3>Built for Scale</h3>
+          <p>Grow across locations, users, and business functions without rebuilding the foundation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="buyer-section reveal">
+    <div class="buyer-section-inner">
+      <div class="buyer-kicker">Flow</div>
+      <h2 class="buyer-title">How It Works</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-icon">1</div>
+          <h3>Capture</h3>
+          <p>Bring in POS data, orders, transactions, and customer activity from daily operations.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon">2</div>
+          <h3>Process</h3>
+          <p>Organize inventory, finance, approvals, and workflows in one connected platform.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon">3</div>
+          <h3>Execute</h3>
+          <p>Turn data into decisions, actions, and insights that move the business forward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team" class="buyer-section alt buyer-team-section reveal">
+    <div class="buyer-section-inner">
+      <div class="buyer-kicker">Leadership</div>
+      <h2 class="buyer-title">Core Team</h2>
+      <p class="buyer-copy">Leadership driving product vision, market growth, and rollout execution across the Olivine platform.</p>
+
+      <div class="leader-grid" role="list">
+        <article class="leader-card" role="listitem">
+          <div class="leader-photo">
+            <img src="team1-viji.jpg" alt="Viji Munuswamy">
+          </div>
+          <a class="leader-name" href="https://viji.olivine.co.in" target="_blank" rel="noopener noreferrer">
+            Viji Munuswamy
+            <span class="leader-link-mark" aria-hidden="true">&rarr;</span>
+          </a>
+          <div class="leader-title">Founder &amp; Platform Architect</div>
+        </article>
+
+        <article class="leader-card" role="listitem">
+          <div class="leader-photo">
+            <img src="team2-tamil.jpg" alt="S. Tamilselvan">
+          </div>
+          <div class="leader-name is-static">S. Tamilselvan</div>
+          <div class="leader-title">Sales &amp; Market Development</div>
+        </article>
+
+        <article class="leader-card" role="listitem">
+          <div class="leader-photo">
+            <img src="team3-raja.png" alt="Raja A">
+          </div>
+          <div class="leader-name is-static">Raja. A</div>
+          <div class="leader-title">Implementation &amp; Rollout</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="buyer-cta-section reveal">
+    <div class="buyer-cta-inner">
+      <div class="buyer-kicker">Next Step</div>
+      <h2 class="buyer-title">Start Your Execution Journey</h2>
+      <p class="buyer-copy">See how Olivine can simplify operations, improve visibility, and support faster growth.</p>
+      <div class="buyer-cta-actions">
+        <a class="hero-btn-primary" href="javascript:void(0)" onclick="openInvestorFlow('book-demo')">Book Demo</a>
+        <a class="hero-btn-secondary" href="javascript:void(0)" onclick="openInvestorFlow('talk-to-expert')">Talk to Expert</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="proof-strip" class="proof-strip-section reveal" hidden>
     <div class="proof-strip-grid">
       <div class="proof-strip-card">
         <div>
@@ -3991,7 +5599,7 @@
   </section>
 
   <!-- PROBLEM SECTION -->
-  <section id="problem" class="problem-section reveal">
+  <section id="problem" class="problem-section reveal" hidden>
     <div class="s-eye">The Infrastructure Gap</div>
     <h2 class="s-h2">Enterprise Systems Are <em>Reaching Their Limits.</em></h2>
     <p class="s-body">ERP, CRM, and HRM systems store data well. They do not execute. Olivine turns enterprise context into governed action.</p>
@@ -4032,7 +5640,7 @@
   </section>
 
   <!-- METRICS STRIP -->
-  <div class="metrics reveal">
+  <div class="metrics reveal" hidden>
     <div class="metric">
       <div class="metric-n">100+</div>
       <div class="metric-context">execution scenarios</div>
@@ -4055,7 +5663,7 @@
     </div>
   </div>
 
-  <section id="delivery" class="delivery-section reveal">
+  <section id="delivery" class="delivery-section reveal" hidden>
     <div class="s-eye">Delivery Methodology</div>
     <h2 class="s-h2">How Olivine <em>Delivers.</em></h2>
     <div class="delivery-grid">
@@ -4083,7 +5691,7 @@
   </section>
 
   <!-- LIVE PROOF STRIP -->
-  <div class="proof-strip reveal">
+  <div class="proof-strip reveal" hidden>
     <div class="proof-label">Execution Registry</div>
     <div class="proof-links">
       <a class="proof-link" href="#delivery">
@@ -4120,7 +5728,7 @@
   </div>
 
   <!-- PLATFORM -->
-  <section id="platform" class="platform-section reveal">
+  <section id="platform" class="platform-section reveal" hidden>
     <div class="s-eye">Full Enterprise Execution</div>
     <h2 class="s-h2">One System. <em>Full Enterprise Execution.</em></h2>
     <p class="s-body">Olivine unifies enterprise functions under a governed execution framework. Built for production
@@ -4193,7 +5801,7 @@
     </section>
 
   <!-- GOVERNANCE FLOW -->
-  <section id="flow" class="gov-flow-section reveal">
+  <section id="flow" class="gov-flow-section reveal" hidden>
     <div class="s-eye" style="justify-content:center">Execution Topology</div>
     <h2 class="s-h2" style="margin: 0 auto 24px;">Multi-Agent <em>Governance Flow.</em></h2>
     <p class="s-body" style="margin: 0 auto;">A governed orchestration engine coordinates inputs, agents, execution, and policy controls in one operating loop.</p>
@@ -4237,7 +5845,7 @@
   </section>
 
   <!-- PROOF SECTION -->
-  <section id="proof" class="problem-section reveal">
+  <section id="proof" class="problem-section reveal" hidden>
     <div class="s-eye">Operational Evidence</div>
     <h2 class="s-h2">Designed for <em>Production.</em></h2>
     <p class="s-body">Olivine is designed for real production conditions: high availability, controlled execution, and measurable system health.</p>
@@ -4286,7 +5894,7 @@
   </section>
 
   <!-- IDENTITY REGISTRY (CONTROL LAYER) -->
-  <section id="registry" class="team-section reveal">
+  <section id="registry" class="team-section reveal" hidden>
     <div class="s-eye">The Control Layer</div>
     <h2 class="s-h2">Identity & Execution <em>Registry.</em></h2>
     <p class="s-body">Execution requires durable identity, state, and traceability. The Olivine registry binds actions to system context, policy, and operational evidence.</p>
@@ -4345,7 +5953,7 @@
       </div>
     </div>
 
-      <div id="team" class="t-group-label" style="max-width:1400px; margin: 56px auto 20px auto; padding: 0 52px; display:block;">Core Team</div>
+      <div id="team-legacy" class="t-group-label" style="max-width:1400px; margin: 56px auto 20px auto; padding: 0 52px; display:block;">Core Team</div>
       <p class="team-cred-line">The team behind Olivine brings 20+ years of enterprise systems delivery.</p>
 
       <div class="t-grid-team">
@@ -4364,7 +5972,7 @@
 
       <div class="t-card t-member-card">
         <div class="t-member-photo">
-          <img src="team2-tamil.png" alt="S. Tamilselvan">
+          <img src="team2-tamil.jpg" alt="S. Tamilselvan">
         </div>
         <div class="t-member-content">
           <span class="t-role">Sales & Digital Marketing Strategist</span>
@@ -4376,7 +5984,7 @@
 
       <div class="t-card t-member-card">
         <div class="t-member-photo">
-          <img src="tam3-raja.jpg" alt="Raja">
+          <img src="team3-raja.png" alt="Raja">
         </div>
         <div class="t-member-content">
           <span class="t-role">Implementation & Rollout Lead</span>
@@ -4412,7 +6020,7 @@
     </div>
   </section>
 
-  <section id="architecture" class="capability-section reveal">
+  <section id="architecture" class="capability-section reveal" hidden>
     <div class="s-eye">Platform Capabilities</div>
     <h2 class="s-h2">Built Across <em>Every Enterprise Layer.</em></h2>
     <div class="capability-grid">
@@ -4440,7 +6048,7 @@
   </section>
 
   <!-- GOVERNANCE -->
-  <section id="governance" class="gov-section reveal">
+  <section id="governance" class="gov-section reveal" hidden>
     <div class="s-eye">Policy Registry</div>
     <h2 class="s-h2">Execution With <em>Constraints.</em></h2>
     <p class="s-body">No action executes outside policy. We define constraints at the control layer, ensuring every
@@ -4489,7 +6097,7 @@
   </section>
 
   <!-- GOVERNED BY DESIGN -->
-  <section id="contact" class="cta-section reveal">
+  <section id="contact-legacy" class="cta-section reveal" hidden>
     <div class="s-eye">Governed by Design</div>
     <h2 class="s-h2">Governed by <em>Design.</em></h2>
     <div class="governed-design-grid">
@@ -4511,7 +6119,7 @@
     </div>
   </section>
 
-  <div class="value-strip">
+  <div class="value-strip" hidden>
     <div class="value-card">
       <div class="value-card-title">For Startups</div>
       <p class="value-card-body">Transform product chaos into scalable, disciplined platforms.</p>
@@ -4524,7 +6132,7 @@
     </div>
   </div>
 
-  <section class="cta-section cta-section-final reveal" style="background: #0F0F0F; border-top: 1px solid #2A2A2A;">
+  <section class="cta-section cta-section-final reveal" style="background: #0F0F0F; border-top: 1px solid #2A2A2A;" hidden>
     <div class="cta-bg-grid"></div>
     <div class="cta-final-inner" style="position:relative; max-width: 820px;">
       <div class="s-eye">Next Step</div>
@@ -4557,8 +6165,8 @@
       </svg>
       <span class="footer-name">Olivine Platform</span>
     </div>
-    <div class="footer-mono">AI-Native &nbsp;·&nbsp; Governed &nbsp;·&nbsp; Enterprise-Grade &nbsp;·&nbsp; Chennai</div>
-    <div style="font-family:'Syne Mono',monospace;font-size:9px;color:var(--muted)">&copy; 2026 Olivine &nbsp;·&nbsp;
+    <div class="footer-mono">ERP Platform | Retail | Finance | Customer Apps | Chennai</div>
+    <div style="font-family:'Syne Mono',monospace;font-size:9px;color:var(--muted)">&copy; 2026 Olivine |
       olivine.co.in</div>
   </footer>
 
@@ -4578,10 +6186,10 @@
       </div>
       <div class="explore-foot">
         <div class="explore-caption">
-          <div class="explore-kicker" id="explore-kicker">Step 1 · Login</div>
+          <div class="explore-kicker" id="explore-kicker">Step 1 Â· Login</div>
           <div class="explore-caption-title" id="explore-caption-title">Secure Identity. Controlled Access.</div>
           <div class="explore-caption-text" id="explore-caption-text">Every workflow begins with authenticated entry and role-bound access.</div>
-          <div class="explore-meta" id="explore-meta">Chapter · Login</div>
+          <div class="explore-meta" id="explore-meta">Chapter Â· Login</div>
         </div>
         <div class="explore-progress">
           <div class="explore-progress-track">
@@ -4605,28 +6213,28 @@
       <button class="modal-close" onclick="closeInvestorFlow()">&times;</button>
       <div id="modal-step-1" class="modal-step active">
         <h3 class="modal-h3">Request Platform Access</h3>
-        <p class="modal-p">Enter your details to request early access, an architecture brief, or a guided product demo.</p>
+        <p class="modal-p">Enter your details to request a product walkthrough, business consultation, or guided demo.</p>
         <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="inv-name"
             class="form-input" placeholder="Enter your name"></div>
         <div class="form-group"><label class="form-label">Work Email</label><input type="email" id="inv-email"
             class="form-input" placeholder="name@organization.com"></div>
-        <div class="form-group"><label class="form-label">Strategic Intent</label>
+        <div class="form-group"><label class="form-label">Primary Role</label>
           <select id="inv-intent" class="form-select">
-            <option value="investor">Institutional Investor</option>
-            <option value="partner">Strategic Partner</option>
-            <option value="enterprise">Enterprise Inquiry</option>
+            <option value="owner">Retail Business Owner</option>
+            <option value="operations">Operations Leader</option>
+            <option value="finance">Finance Leader</option>
           </select>
         </div>
         <button class="btn-modal" onclick="nextModalStep(2)">Continue</button>
       </div>
       <div id="modal-step-2" class="modal-step">
-        <h3 class="modal-h3">Routing Details</h3>
-        <p class="modal-p">Select your primary area of interest so the request can be routed correctly.</p>
+        <h3 class="modal-h3">Tell Us What You Need</h3>
+        <p class="modal-p">Select your primary area of interest so we can tailor the right conversation.</p>
         <div class="form-group"><label class="form-label">Area of Interest</label>
           <select id="inv-interest" class="form-select">
-            <option value="platform">Platform &amp; Ecosystem</option>
-            <option value="architecture">Governance Architecture</option>
-            <option value="deployment">Market Deployment</option>
+            <option value="platform">Platform Overview</option>
+            <option value="products">Product Modules</option>
+            <option value="apps">Custom Apps &amp; Rollout</option>
           </select>
         </div>
         <div class="form-group"><label class="form-label">Organization (Optional)</label><input type="text" id="inv-org"
@@ -4635,7 +6243,7 @@
       </div>
       <div id="modal-step-3" class="modal-step">
         <h3 class="modal-h3">Request Received</h3>
-        <p class="modal-p">Your request has been routed. The next follow-up will include the relevant architecture, access, or demo details.</p>
+        <p class="modal-p">Your request has been received. Our next follow-up will include the most relevant product, rollout, or demo details.</p>
         <a href="#" class="deck-link" onclick="closeInvestorFlow()">Close Request &rsaquo;</a>
         <p style="margin-top: 24px; font-size: 11px; color: var(--subtle); text-transform: uppercase;">Reference:
           DECK-REG-2026-01</p>
@@ -4659,7 +6267,7 @@
       {
         id: 'login',
         image: 'explore-assets/walkthrough/0_login.png',
-        kicker: 'Step 1 · Login',
+        kicker: 'Step 1 Â· Login',
         title: 'Secure Identity. Controlled Access.',
         text: 'Every workflow begins with authenticated entry and role-bound access.',
         chapter: 'Login'
@@ -4667,7 +6275,7 @@
       {
         id: 'landing',
         image: 'explore-assets/walkthrough/0_platform_unified_admin_dashboard.png',
-        kicker: 'Step 2 · Landing',
+        kicker: 'Step 2 Â· Landing',
         title: 'Unified Enterprise Entry Point',
         text: 'The system opens with a live enterprise command surface, not a static landing page.',
         chapter: 'Landing'
@@ -4675,7 +6283,7 @@
       {
         id: 'modules',
         image: 'explore-assets/walkthrough/19sys_admin_sidebar.png',
-        kicker: 'Step 3 · Module Navigation',
+        kicker: 'Step 3 Â· Module Navigation',
         title: 'Structured Modules. Clear Boundaries.',
         text: 'Retail sits inside a governed module shell with clearly defined operating layers.',
         chapter: 'Modules'
@@ -4683,7 +6291,7 @@
       {
         id: 'po-entry',
         image: 'explore-assets/walkthrough/3_RETAIL_PURCHASE_ORDERS_entry.png',
-        kicker: 'Step 4 · Procurement',
+        kicker: 'Step 4 Â· Procurement',
         title: 'Procurement executed as a system',
         text: 'Purchase order entry captures supplier commitments and operational demand in one controlled workflow.',
         chapter: 'Procurement'
@@ -4691,7 +6299,7 @@
       {
         id: 'po-listing',
         image: 'explore-assets/walkthrough/3_RETAIL_PURCHASE_ORDERS_listing.png',
-        kicker: 'Step 4 · Procurement',
+        kicker: 'Step 4 Â· Procurement',
         title: 'Procurement executed as a system',
         text: 'Live listings turn transactions into visibility, follow-up, and execution discipline.',
         chapter: 'Procurement'
@@ -4699,7 +6307,7 @@
       {
         id: 'receipts',
         image: 'explore-assets/walkthrough/108_RETAIL_RECEIPTS_entry.png',
-        kicker: 'Step 4 · Procurement',
+        kicker: 'Step 4 Â· Procurement',
         title: 'Procurement executed as a system',
         text: 'Goods receipt closes the loop from ordered supply into validated stock movement.',
         chapter: 'Procurement'
@@ -4707,7 +6315,7 @@
       {
         id: 'supplier',
         image: 'explore-assets/walkthrough/15_RETAIL_SUPPLIER_MASTER_entry.png',
-        kicker: 'Step 5 · Master Data',
+        kicker: 'Step 5 Â· Master Data',
         title: 'Core entities driving execution',
         text: 'Supplier entities drive procurement linkage, policy checks, and payables readiness.',
         chapter: 'Masters'
@@ -4715,7 +6323,7 @@
       {
         id: 'customer',
         image: 'explore-assets/walkthrough/16_RETAIL_CUSTOMER_MASTER_entry.png',
-        kicker: 'Step 5 · Master Data',
+        kicker: 'Step 5 Â· Master Data',
         title: 'Core entities driving execution',
         text: 'Customer records activate billing, service, and downstream relationship workflows.',
         chapter: 'Masters'
@@ -4723,7 +6331,7 @@
       {
         id: 'item',
         image: 'explore-assets/walkthrough/2_RETAIL_ITEM_MASTER_entry.png',
-        kicker: 'Step 5 · Master Data',
+        kicker: 'Step 5 Â· Master Data',
         title: 'Core entities driving execution',
         text: 'Item master data feeds pricing, inventory, merchandising, and transaction flows.',
         chapter: 'Masters'
@@ -4731,7 +6339,7 @@
       {
         id: 'company',
         image: 'explore-assets/walkthrough/37_RETAIL_COMPANY_entry.png',
-        kicker: 'Step 6 · Organization',
+        kicker: 'Step 6 Â· Organization',
         title: 'Enterprise structure, fully modeled.',
         text: 'Company-level settings define the governed operating shell of the system.',
         chapter: 'Structure'
@@ -4739,7 +6347,7 @@
       {
         id: 'locations',
         image: 'explore-assets/walkthrough/440_RETAIL_LOCATIONS_SETUP_entry.png',
-        kicker: 'Step 6 · Organization',
+        kicker: 'Step 6 Â· Organization',
         title: 'Enterprise structure, fully modeled.',
         text: 'Locations extend the model into the real operating footprint across stores and nodes.',
         chapter: 'Structure'
@@ -4747,7 +6355,7 @@
       {
         id: 'sales-config',
         image: 'explore-assets/walkthrough/11retail_sales_config.png',
-        kicker: 'Step 7 · Configuration',
+        kicker: 'Step 7 Â· Configuration',
         title: 'Flexible, governed configuration.',
         text: 'Operational settings adapt the system without breaking control or consistency.',
         chapter: 'Config'
@@ -4755,7 +6363,7 @@
       {
         id: 'attributes',
         image: 'explore-assets/platform_unified_admin.png',
-        kicker: 'Step 7 · Configuration',
+        kicker: 'Step 7 Â· Configuration',
         title: 'Flexible, governed configuration.',
         text: 'Administrative controls carry configuration changes through a governed system layer.',
         chapter: 'Config'
@@ -4763,7 +6371,7 @@
       {
         id: 'system-view',
         image: 'explore-assets/retail_dashboard.png',
-        kicker: 'Step 8 · System View',
+        kicker: 'Step 8 Â· System View',
         title: 'This is not a UI. This is an Execution System.',
         text: 'The end state is a working enterprise platform where screens participate in one connected execution layer.',
         chapter: 'System'
@@ -4817,7 +6425,7 @@
       exploreKicker.textContent = slide.kicker;
       exploreCaptionTitle.textContent = slide.title;
       exploreCaptionText.textContent = slide.text;
-      exploreMeta.textContent = 'Chapter · ' + slide.chapter + ' · ' + String(exploreCurrentIndex + 1).padStart(2, '0') + '/' + String(exploreSlides.length).padStart(2, '0');
+      exploreMeta.textContent = 'Chapter Â· ' + slide.chapter + ' Â· ' + String(exploreCurrentIndex + 1).padStart(2, '0') + '/' + String(exploreSlides.length).padStart(2, '0');
       exploreProgressFill.style.width = (((exploreCurrentIndex + 1) / exploreSlides.length) * 100) + '%';
 
       preloadExploreImages(exploreCurrentIndex);
@@ -4987,6 +6595,8 @@
 </body>
 
 </html>
+
+
 
 
 

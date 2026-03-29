@@ -826,10 +826,81 @@
             label: 'Control Plane',
             cards: [
               {
+                title: 'Secure Login',
+                image: 'explore-assets/walkthrough/0_login.png',
+                functionText: 'Starts access with authenticated sign-in and role-aware entry.',
+                executionRole: 'Ensures the right users enter the platform with the right permissions from the start.'
+              },
+              {
                 title: 'Unified Admin Console',
                 image: 'explore-assets/platform_unified_admin.png',
                 functionText: 'Centralizes administration, role boundaries, and platform-level controls.',
                 executionRole: 'Coordinates identity, settings, and governance rules across modules.'
+              },
+              {
+                title: 'Unified Admin Dashboard',
+                image: 'explore-assets/walkthrough/0_platform_unified_admin_dashboard.png',
+                functionText: 'Brings operational controls, shortcuts, and platform oversight into one workspace.',
+                executionRole: 'Helps teams manage setup, visibility, and cross-module administration from one place.'
+              },
+              {
+                title: 'Navigation Console',
+                image: 'explore-assets/walkthrough/19sys_admin_sidebar.png',
+                functionText: 'Provides fast access to platform areas, setup tasks, and operating modules.',
+                executionRole: 'Improves admin movement across the platform and speeds up control tasks.'
+              }
+            ]
+          },
+          {
+            label: 'Access & Preferences',
+            cards: [
+              {
+                title: 'Dashboard Workspace',
+                image: 'explore-assets/walkthrough/01dashboard.png',
+                functionText: 'Surfaces the user workspace with quick access to daily tasks and signals.',
+                executionRole: 'Keeps teams productive with a clear starting point for day-to-day operations.'
+              },
+              {
+                title: 'Quick Search & Actions',
+                image: 'explore-assets/walkthrough/01dashboard-ctrlk.png',
+                functionText: 'Lets users jump to screens, actions, and records from one command-style search.',
+                executionRole: 'Reduces navigation time and accelerates operational response.'
+              },
+              {
+                title: 'User Profile Settings',
+                image: 'explore-assets/walkthrough/01dashboard-userprofile.png',
+                functionText: 'Manages personal account preferences and user-level settings.',
+                executionRole: 'Supports secure, personalized use of the platform across teams.'
+              },
+              {
+                title: 'User Permissions',
+                image: 'explore-assets/walkthrough/03user-permissions-01.png',
+                functionText: 'Defines role access and user permissions across key workflows.',
+                executionRole: 'Maintains control over who can view, approve, and operate each part of the platform.'
+              },
+              {
+                title: 'Permission Controls',
+                image: 'explore-assets/walkthrough/03user-permissions-02.png',
+                functionText: 'Refines access rules for teams, functions, and operational responsibilities.',
+                executionRole: 'Supports safer delegation and cleaner control across departments.'
+              },
+              {
+                title: 'Role Access Matrix',
+                image: 'explore-assets/walkthrough/03user-permissions-03.png',
+                functionText: 'Shows permission coverage across users, modules, and actions.',
+                executionRole: 'Makes access governance easier to review and maintain at scale.'
+              },
+              {
+                title: 'Layout Preferences',
+                image: 'explore-assets/walkthrough/04system-layout-preferences.png',
+                functionText: 'Configures workspace layout and visual operating preferences.',
+                executionRole: 'Helps teams tailor the platform for faster daily use.'
+              },
+              {
+                title: 'Data Source Console',
+                image: 'explore-assets/walkthrough/04system-dbconole.png',
+                functionText: 'Supports database connectivity and system-level configuration visibility.',
+                executionRole: 'Strengthens setup confidence for platform administration and rollout.'
               }
             ]
           }
@@ -857,6 +928,18 @@
                 image: 'explore-assets/retail_supplier_listing.png',
                 functionText: 'Displays active supplier records and procurement-facing master data.',
                 executionRole: 'Supports supplier discovery, validation, and operational handoff into buying workflows.'
+              },
+              {
+                title: 'Purchase Requisition',
+                image: 'explore-assets/walkthrough/09procurement-pr.png',
+                functionText: 'Captures internal buying needs before they move into procurement execution.',
+                executionRole: 'Helps teams structure demand early and route sourcing requests more clearly.'
+              },
+              {
+                title: 'Requisition Item Selection',
+                image: 'explore-assets/walkthrough/09procurement-pr-additem.png',
+                functionText: 'Adds requested items, quantities, and buying details into the requisition flow.',
+                executionRole: 'Improves procurement accuracy before orders are committed to vendors.'
               },
               {
                 title: 'Purchase Orders',
@@ -892,6 +975,100 @@
                 image: 'explore-assets/retail_customer_entry.png',
                 functionText: 'Captures new customer profiles and account details.',
                 executionRole: 'Activates downstream sales, credit, and service workflows.'
+              },
+              {
+                title: 'Item Setup',
+                image: 'explore-assets/walkthrough/10itemadd.png',
+                functionText: 'Creates item records with the core selling and inventory attributes needed for operations.',
+                executionRole: 'Prepares products for procurement, stock movement, and billing workflows.'
+              },
+              {
+                title: 'Extended Item Details',
+                image: 'explore-assets/walkthrough/10itemadd2.png',
+                functionText: 'Expands the product setup flow with additional operating and catalog details.',
+                executionRole: 'Improves item readiness for merchandising, pricing, and store execution.'
+              },
+              {
+                title: 'Final Item Configuration',
+                image: 'explore-assets/walkthrough/10itemadd3.png',
+                functionText: 'Completes the item setup flow before the product becomes operationally available.',
+                executionRole: 'Helps teams launch products cleanly across inventory and billing.'
+              }
+            ]
+          },
+          {
+            label: 'Merchandising & Setup',
+            cards: [
+              {
+                title: 'Merchandise Workspace',
+                image: 'explore-assets/walkthrough/06merchandise.png',
+                functionText: 'Brings core merchandising controls into one operating workspace.',
+                executionRole: 'Helps teams manage assortment, product setup, and operational consistency.'
+              },
+              {
+                title: 'General Masters',
+                image: 'explore-assets/walkthrough/06merchandise-general-masters.png',
+                functionText: 'Maintains supporting master data used across merchandise operations.',
+                executionRole: 'Keeps product and setup workflows standardized across the business.'
+              },
+              {
+                title: 'Merchandise Customers',
+                image: 'explore-assets/walkthrough/06merchandise-customers.png',
+                functionText: 'Connects merchandising views with customer-facing operating data.',
+                executionRole: 'Supports stronger coordination between product, customer, and sales teams.'
+              },
+              {
+                title: 'Attributes',
+                image: 'explore-assets/walkthrough/10attributes.png',
+                functionText: 'Defines product attributes used for categorization and retail control.',
+                executionRole: 'Improves assortment structure, product discoverability, and operational consistency.'
+              },
+              {
+                title: 'Attribute Setup',
+                image: 'explore-assets/walkthrough/10attributes-add.png',
+                functionText: 'Creates new attribute definitions for item and catalog management.',
+                executionRole: 'Lets teams expand the product model as business needs grow.'
+              },
+              {
+                title: 'Attribute Values',
+                image: 'explore-assets/walkthrough/10attributes-values-add.png',
+                functionText: 'Adds the value sets used by product attributes across merchandise records.',
+                executionRole: 'Supports cleaner product standardization across categories and channels.'
+              }
+            ]
+          },
+          {
+            label: 'Organization & Rollout',
+            cards: [
+              {
+                title: 'Company Setup',
+                image: 'explore-assets/walkthrough/07org-company.png',
+                functionText: 'Defines the operating company structure inside the platform.',
+                executionRole: 'Establishes the foundation for locations, finance, and cross-functional setup.'
+              },
+              {
+                title: 'Add Company',
+                image: 'explore-assets/walkthrough/07org-add-company.png',
+                functionText: 'Adds new business entities into the operating structure.',
+                executionRole: 'Supports expansion across brands, business units, or rollout phases.'
+              },
+              {
+                title: 'Location Setup',
+                image: 'explore-assets/walkthrough/07org-location.png',
+                functionText: 'Configures operational locations used by stores, inventory, and reporting.',
+                executionRole: 'Helps teams launch and manage multiple operating sites with consistency.'
+              },
+              {
+                title: 'Opening Stock & Go-Live',
+                image: 'explore-assets/walkthrough/05openingstock-system-golive.png',
+                functionText: 'Prepares opening inventory and go-live readiness during rollout.',
+                executionRole: 'Supports cleaner transitions into live operations with fewer launch gaps.'
+              },
+              {
+                title: 'Sales Configuration',
+                image: 'explore-assets/walkthrough/11retail_sales_config.png',
+                functionText: 'Defines key sales settings that shape billing and store operations.',
+                executionRole: 'Keeps commercial execution aligned across stores and teams.'
               }
             ]
           },
@@ -911,10 +1088,10 @@
                 executionRole: 'Anchors replenishment, availability, and allocation decisions.'
               },
               {
-                title: 'Sales Performance',
-                image: 'explore-assets/retail_sales_performance.png',
-                functionText: 'Tracks sales velocity, contribution, and merchandise performance.',
-                executionRole: 'Feeds pricing, assortment, and procurement decisions with live operating signals.'
+                title: 'User Permissions',
+                image: 'explore-assets/walkthrough/03user-permissions-01.png',
+                functionText: 'Defines user access, approvals, and role-based permissions across business workflows.',
+                executionRole: 'Keeps sensitive actions controlled by assigning the right permissions to the right teams.'
               }
             ]
           }
@@ -938,10 +1115,117 @@
                 executionRole: 'Initiates the store execution cycle with validated operational readiness.'
               },
               {
+                title: 'Day Management',
+                image: 'explore-assets/walkthrough/02.3pos-billing-day-management.png',
+                functionText: 'Monitors the operational status of the store day and active billing activity.',
+                executionRole: 'Helps store teams control sessions, timing, and daily operational flow.'
+              },
+              {
+                title: 'POS Preferences',
+                image: 'explore-assets/walkthrough/04pos-preferences.png',
+                functionText: 'Configures point-of-sale behavior, operating preferences, and store-level controls.',
+                executionRole: 'Supports smoother checkout execution with settings aligned to each store.'
+              },
+              {
+                title: 'POS Terminal',
+                image: 'explore-assets/walkthrough/02pos-terminal.png',
+                functionText: 'Shows the terminal setup used for billing and in-store transaction operations.',
+                executionRole: 'Connects the store floor to live transaction handling and operational control.'
+              },
+              {
+                title: 'Terminal Setup',
+                image: 'explore-assets/walkthrough/02pos-terminal-add.png',
+                functionText: 'Adds and configures POS terminals for store operations.',
+                executionRole: 'Supports new counter rollout and structured store expansion.'
+              },
+              {
+                title: 'Terminal Configuration',
+                image: 'explore-assets/walkthrough/02pos-terminal-add2.png',
+                functionText: 'Captures additional setup details for terminal readiness.',
+                executionRole: 'Improves consistency across devices, counters, and store locations.'
+              },
+              {
+                title: 'Terminal Controls',
+                image: 'explore-assets/walkthrough/02pos-terminal-add3.png',
+                functionText: 'Refines terminal operating rules and activation settings.',
+                executionRole: 'Keeps frontline devices aligned with store policy and transaction flow.'
+              },
+              {
+                title: 'Terminal Finalization',
+                image: 'explore-assets/walkthrough/02pos-terminal-add4.png',
+                functionText: 'Completes the setup flow before a terminal becomes live in store.',
+                executionRole: 'Helps stores launch new terminals with less setup friction.'
+              },
+              {
                 title: 'POS Checkout',
                 image: 'explore-assets/retail_pos_checkout.png',
                 functionText: 'Captures billing, tender, and item-level sales transactions at speed.',
                 executionRole: 'Executes the last-mile revenue event and updates inventory in real time.'
+              }
+            ]
+          },
+          {
+            label: 'Billing Flow',
+            cards: [
+              {
+                title: 'Billing Workspace',
+                image: 'explore-assets/walkthrough/02pos-billing.png',
+                functionText: 'Provides the main workspace for in-store billing execution.',
+                executionRole: 'Gives cashiers a fast, structured surface for daily transaction handling.'
+              },
+              {
+                title: 'Billing with Customer',
+                image: 'explore-assets/walkthrough/02.1pos-billing-cust.png',
+                functionText: 'Links customer details into the billing journey at the point of sale.',
+                executionRole: 'Supports loyalty, account-based service, and better checkout context.'
+              },
+              {
+                title: 'Billing with Items',
+                image: 'explore-assets/walkthrough/02.1pos-billing-item.png',
+                functionText: 'Captures line items, quantities, and live sale details during checkout.',
+                executionRole: 'Moves transactions quickly while keeping item-level control intact.'
+              },
+              {
+                title: 'Billing Payment',
+                image: 'explore-assets/walkthrough/02.3pos-billing-payment.png',
+                functionText: 'Handles payment execution across supported tender methods.',
+                executionRole: 'Brings payment collection into the same streamlined checkout flow.'
+              },
+              {
+                title: 'Tender Handling',
+                image: 'explore-assets/walkthrough/02.3pos-billing-tend.png',
+                functionText: 'Manages tender selection and cashier-level payment handling.',
+                executionRole: 'Keeps settlement steps clear and consistent during billing.'
+              },
+              {
+                title: 'Billing Receipt',
+                image: 'explore-assets/walkthrough/02.1pos-billing-receipt.png',
+                functionText: 'Generates the final receipt view for completed store transactions.',
+                executionRole: 'Closes the customer checkout cycle with a clean transaction record.'
+              },
+              {
+                title: 'Billing Session',
+                image: 'explore-assets/walkthrough/02pos-billing-session.png',
+                functionText: 'Tracks the active cashier or counter session during store operations.',
+                executionRole: 'Supports stronger control over live billing activity throughout the day.'
+              },
+              {
+                title: 'Session End',
+                image: 'explore-assets/walkthrough/02pos-billing-session-end.png',
+                functionText: 'Closes the current billing session with end-of-session control steps.',
+                executionRole: 'Improves accountability and handoff at the counter level.'
+              },
+              {
+                title: 'Day End',
+                image: 'explore-assets/walkthrough/02pos-billing-dayend.png',
+                functionText: 'Handles closing steps for the store billing day.',
+                executionRole: 'Supports a cleaner transition from active trading to reconciliation.'
+              },
+              {
+                title: 'Settlement',
+                image: 'explore-assets/walkthrough/02pos-billing-settlement.png',
+                functionText: 'Finalizes totals, payment balances, and billing closure actions.',
+                executionRole: 'Helps stores complete cash and transaction reconciliation with confidence.'
               }
             ]
           }

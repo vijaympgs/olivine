@@ -18,6 +18,7 @@ $ExcludePatterns = @(
   "index_clean.html",
   "onboarding_extracted/*",
   "onboarding_extracted",
+  "explore-assets/walkthrough/* copy.png",
   "*.ps1",
   "*.bat"
 )

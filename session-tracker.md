@@ -1,5 +1,60 @@
 # Session Tracker
 
+## Session: 2026-04-04
+
+### What Landed In This Session
+- Created `team-config.js` for dynamic team member management:
+  - Centralized configuration array with all 6 team member slots
+  - Properties: id, name, role, shortRole, bio, photo, profileUrl, profileLabel, note, active
+  - Dual rendering: buyer-focused `leader-grid` and detailed `t-grid-team`
+- Updated `index.html` to render team from config:
+  - Cleared hardcoded team HTML from both sections
+  - Added `<script src="team-config.js"></script>` include
+  - Dynamic rendering with `active` flag filtering
+- Team roster update:
+  - Removed `Raja. A` from active display (`active: false`)
+  - Active members now: Viji Munuswamy, S. Tamilselvan
+  - Placeholders M4, M5, M6 remain ready for future hires
+- Deployed to production via `deploy-static.bat`
+  - CloudFront invalidation triggered
+  - Site updated within 2-3 minutes globally
+
+### SEO, Domain, And Search Console Completion
+- Confirmed canonical public site:
+  - `https://www.olivine.co.in/`
+- Confirmed apex domain handling:
+  - `https://olivine.co.in/` now forwards to `https://www.olivine.co.in/`
+- Added public SEO metadata in `index.html`:
+  - meta description
+  - canonical tag
+  - Open Graph tags
+  - Twitter card tags
+  - robots directive
+- Added crawl files:
+  - `robots.txt`
+  - `sitemap.xml`
+- Added Google Search Console verification file:
+  - `googlede9a897bc585b113.html`
+- Deployed SEO and verification updates to production via `deploy-static.bat`
+- CloudFront invalidations triggered during SEO rollout:
+  - `I46FT9EJN0BN0288ST8LHBWD1R`
+  - `IA9IMFMD01KQQIO9F501X1H43X`
+- Verified live public crawl files:
+  - `https://www.olivine.co.in/robots.txt`
+  - `https://www.olivine.co.in/sitemap.xml`
+- Google Search Console completed:
+  - `https://www.olivine.co.in/` verified
+  - `olivine.co.in` domain property verified via DNS provider flow
+  - sitemap submitted for `https://www.olivine.co.in/sitemap.xml`
+  - indexing requested for:
+    - `https://www.olivine.co.in/`
+    - `https://olivine.co.in/`
+- Outcome:
+  - GoDaddy redirect, AWS deployment, and Google submission flow are complete
+  - Remaining action is passive monitoring while Google refreshes search results over the coming days
+
+---
+
 ## Session: 2026-03-28
 
 ### Project

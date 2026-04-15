@@ -38,39 +38,51 @@ const TEAM_CONFIG = [
   },
   {
     id: "m4",
-    name: "Member Placeholder 04",
-    role: "Placeholder Role",
-    shortRole: "Placeholder",
-    bio: "Reserved for governance, controls, or enterprise program responsibilities across the platform stack.",
+    name: "Governance & Controls",
+    role: "Governance, Controls & Enterprise Program",
+    shortRole: "Governance & Controls",
+    bio: "Responsible for governance frameworks, compliance controls, and enterprise program management across the platform stack.",
     photo: null,
     profileUrl: null,
     profileLabel: null,
-    note: "Profile Pending",
-    active: false
+    note: "Hiring",
+    active: true
   },
   {
     id: "m5",
-    name: "Member Placeholder 05",
-    role: "Placeholder Role",
-    shortRole: "Placeholder",
-    bio: "Reserved for product growth, client delivery, or ecosystem responsibilities as the team profile expands.",
+    name: "Client Delivery & Growth",
+    role: "Product Growth & Client Delivery",
+    shortRole: "Client Delivery & Growth",
+    bio: "Leads product expansion, client success, and ecosystem partnerships to drive platform adoption and enterprise growth.",
     photo: null,
     profileUrl: null,
     profileLabel: null,
-    note: "Profile Pending",
-    active: false
+    note: "Hiring",
+    active: true
   },
   {
     id: "m6",
-    name: "Member Placeholder 06",
-    role: "Placeholder Role",
-    shortRole: "Placeholder",
-    bio: "Reserved for finance, operations, or strategic support functions that complete the initial team slate.",
+    name: "Finance & Operations",
+    role: "Finance & Strategic Operations",
+    shortRole: "Finance & Operations",
+    bio: "Oversees financial planning, operational excellence, and strategic support functions for scalable execution.",
     photo: null,
     profileUrl: null,
     profileLabel: null,
-    note: "Profile Pending",
-    active: false
+    note: "Hiring",
+    active: true
+  },
+  {
+    id: "m7",
+    name: "HR & Administration",
+    role: "Human Resources & Administration",
+    shortRole: "HR & Admin",
+    bio: "Manages talent acquisition, employee engagement, and administrative operations to support team growth and organizational culture.",
+    photo: null,
+    profileUrl: null,
+    profileLabel: null,
+    note: "Hiring",
+    active: true
   }
 ];
 
@@ -93,10 +105,12 @@ function renderBuyerTeam() {
          </a>`
       : `<div class="leader-name is-static">${member.name}</div>`;
 
+    const photoHtml = member.photo
+      ? `<div class="leader-photo"><img src="${member.photo}" alt="${member.name}"></div>`
+      : `<div class="leader-photo t-avatar-placeholder">${member.id.toUpperCase()}</div>`;
+
     article.innerHTML = `
-      <div class="leader-photo">
-        <img src="${member.photo}" alt="${member.name}">
-      </div>
+      ${photoHtml}
       ${nameHtml}
       <div class="leader-title">${member.shortRole}</div>
     `;

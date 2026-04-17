@@ -2,6 +2,7 @@
 const TEAM_CONFIG = [
   {
     id: "viji",
+    order: 1,
     name: "Viji Munuswamy",
     role: "Founding Systems Architect",
     shortRole: "Founder & Platform Architect",
@@ -14,6 +15,7 @@ const TEAM_CONFIG = [
   },
   {
     id: "tamil",
+    order: 2,
     name: "S. Tamilselvan",
     role: "Sales & Digital Marketing Strategist",
     shortRole: "Sales & Market Development",
@@ -26,6 +28,7 @@ const TEAM_CONFIG = [
   },
   {
     id: "raja",
+    order: 4,
     name: "Raja. A",
     role: "Implementation & Rollout Lead",
     shortRole: "Implementation & Rollout",
@@ -37,52 +40,43 @@ const TEAM_CONFIG = [
     active: true
   },
   {
-    id: "m4",
-    name: "Governance & Controls",
-    role: "Governance, Controls & Enterprise Program",
-    shortRole: "Governance & Controls",
-    bio: "Responsible for governance frameworks, compliance controls, and enterprise program management across the platform stack.",
-    photo: null,
+    id: "prabakaran",
+    order: 3,
+    name: "Prabakaran Sampath",
+    role: "Director – Finance & Operations",
+    shortRole: "Finance & Operations",
+    bio: "A seasoned professional with 20+ years of experience across financial operations, risk management, and enterprise back-office systems, Prabakaran leads Olivine's finance, payroll, and client billing functions. He ensures operational precision, financial discipline, and scalable governance as the organization grows.",
+    photo: "team-prabakaran.jpg",
     profileUrl: null,
     profileLabel: null,
-    note: "Hiring",
+    note: "Finance & Operations",
     active: true
   },
   {
     id: "m5",
-    name: "Client Delivery & Growth",
-    role: "Product Growth & Client Delivery",
-    shortRole: "Client Delivery & Growth",
-    bio: "Leads product expansion, client success, and ecosystem partnerships to drive platform adoption and enterprise growth.",
+    order: 5,
+    name: "Member Placeholder 05",
+    role: "Placeholder Role",
+    shortRole: "Placeholder",
+    bio: "Reserved for product growth, client delivery, or ecosystem responsibilities as the team profile expands.",
     photo: null,
     profileUrl: null,
     profileLabel: null,
-    note: "Hiring",
-    active: true
+    note: "Profile Pending",
+    active: false
   },
   {
     id: "m6",
-    name: "Finance & Operations",
-    role: "Finance & Strategic Operations",
-    shortRole: "Finance & Operations",
-    bio: "Oversees financial planning, operational excellence, and strategic support functions for scalable execution.",
+    order: 6,
+    name: "Member Placeholder 06",
+    role: "Placeholder Role",
+    shortRole: "Placeholder",
+    bio: "Reserved for finance, operations, or strategic support functions that complete the initial team slate.",
     photo: null,
     profileUrl: null,
     profileLabel: null,
-    note: "Hiring",
-    active: true
-  },
-  {
-    id: "m7",
-    name: "HR & Administration",
-    role: "Human Resources & Administration",
-    shortRole: "HR & Admin",
-    bio: "Manages talent acquisition, employee engagement, and administrative operations to support team growth and organizational culture.",
-    photo: null,
-    profileUrl: null,
-    profileLabel: null,
-    note: "Hiring",
-    active: true
+    note: "Profile Pending",
+    active: false
   }
 ];
 
@@ -93,7 +87,7 @@ function renderBuyerTeam() {
 
   container.innerHTML = '';
 
-  TEAM_CONFIG.filter(m => m.active).forEach(member => {
+  [...TEAM_CONFIG].filter(m => m.active).sort((a, b) => a.order - b.order).forEach(member => {
     const article = document.createElement('article');
     article.className = 'leader-card';
     article.setAttribute('role', 'listitem');
@@ -105,12 +99,10 @@ function renderBuyerTeam() {
          </a>`
       : `<div class="leader-name is-static">${member.name}</div>`;
 
-    const photoHtml = member.photo
-      ? `<div class="leader-photo"><img src="${member.photo}" alt="${member.name}"></div>`
-      : `<div class="leader-photo t-avatar-placeholder">${member.id.toUpperCase()}</div>`;
-
     article.innerHTML = `
-      ${photoHtml}
+      <div class="leader-photo">
+        <img src="${member.photo}" alt="${member.name}">
+      </div>
       ${nameHtml}
       <div class="leader-title">${member.shortRole}</div>
     `;
@@ -126,7 +118,7 @@ function renderDetailedTeam() {
 
   container.innerHTML = '';
 
-  TEAM_CONFIG.forEach(member => {
+  [...TEAM_CONFIG].sort((a, b) => a.order - b.order).forEach(member => {
     const card = document.createElement('div');
     card.className = member.active ? 't-card t-member-card' : 't-card t-placeholder';
     if (!member.active) card.setAttribute('hidden', '');

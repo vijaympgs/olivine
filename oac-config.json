@@ -1,0 +1,7 @@
+{
+  "Name": "olivine-oac",
+  "Description": "OAC for olivine.co.in",
+  "SigningProtocol": "sigv4",
+  "SigningBehavior": "always",
+  "OriginAccessControlOriginType": "s3"
+}

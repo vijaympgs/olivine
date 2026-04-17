@@ -25,7 +25,7 @@ jobs:
 
       - name: Sync to S3
         run: |
-          aws s3 sync . s3://olivine-site-622370466597 \
+          aws s3 sync . s3://olivine-site-673981388490 \
             --exclude "*.md" \
             --exclude "*.bat" \
             --exclude "cf-domain.txt" \
@@ -37,5 +37,5 @@ jobs:
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ESOD6OOBYZS61 \
+            --distribution-id E2K781O9900J5H \
             --paths "/*"

@@ -1,0 +1,63 @@
+# JavaScript dependencies and package-manager caches
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Frontend build and test outputs
+dist/
+dist-ssr/
+build/
+.vite/
+coverage/
+htmlcov/
+playwright-report/
+test-results/
+.parcel-cache/
+.eslintcache
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.tox/
+.nox/
+
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.local
+*.pem
+*.key
+
+# Local databases and logs
+*.log
+*.err.log
+*.out
+*.pid
+*.sqlite3
+*.db
+
+# IDE and OS noise
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Local temp folders
+tmp/
+.archive/
+src-backup/

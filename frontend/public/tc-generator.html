@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Olivine — BDD Generator</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 13px;
+            background: #f8fafc;
+            color: #1e293b;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column
+        }
+
+        /* ── TOP HEADER (matches app h-16 top bar) ── */
+        .topbar {
+            height: 48px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            border-bottom: 1px solid #0f172a;
+            flex-shrink: 0
+        }
+
+        .topbar-logo {
+            width: 28px;
+            height: 28px;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px
+        }
+
+        .topbar-logo svg {
+            width: 16px;
+            height: 16px;
+            fill: #fff
+        }
+
+        .topbar-brand {
+            font-size: 13px;
+            font-weight: 700;
+            color: #f1f5f9;
+            letter-spacing: .01em
+        }
+
+        .topbar-sep {
+            width: 1px;
+            height: 18px;
+            background: #334155
+        }
+
+        .topbar-page {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 400
+        }
+
+        .topbar-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #64748b
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #34d399;
+            border-radius: 50%
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden
+        }
+
+        /* ── EXPLORER SIDEBAR (exact ExplorerSidebar.tsx replica) ── */
+        .explorer {
+            width: 240px;
+            background: #f1f5f9;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0
+        }
+
+        .explorer-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 10px 12px 8px;
+            border-bottom: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, .5);
+            flex-shrink: 0
+        }
+
+        .explorer-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b
+        }
+
+        .explorer-title svg {
+            width: 16px;
+            height: 16px;
+            stroke: #64748b;
+            fill: none;
+            stroke-width: 2
+        }
+
+        .explorer-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: #64748b
+        }
+
+        .explorer-tree {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px
+        }
+
+        .explorer-tree::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .explorer-tree::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px
+        }
+
+        /* App row */
+        .app-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background .12s;
+            user-select: none;
+            margin-bottom: 2px
+        }
+
+        .app-row:hover {
+            background: #e2e8f0
+        }
+
+        .app-row.expanded {
+            background: rgba(226, 232, 240, .5);
+            color: #1e293b
+        }
+
+        .app-row .chevron {
+            width: 16px;
+            height: 16px;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+            transition: transform .15s
+        }
+
+        .app-row.expanded .chevron {
+            transform: rotate(90deg)
+        }
+
+        .app-row .app-icon {
+            color: #6366f1;
+            flex-shrink: 0
+        }
+
+        .app-row .app-icon svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2
+        }
+
+        .app-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: -.01em
+        }
+
+        /* Module children */
+        .mod-list {
+            margin-left: 22px;
+            border-left: 1px solid rgba(203, 213, 225, .5);
+            padding-left: 8px;
+            margin-top: 2px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px
+        }
+
+        .mod-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .12s;
+            border: 1px solid transparent;
+            font-size: 12px;
+            color: #64748b
+        }
+
+        .mod-row:hover {
+            background: #e2e8f0;
+            color: #1e293b
+        }
+
+        .mod-row.active {
+            background: #fff;
+            border-color: #e2e8f0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+            color: #4f46e5;
+            font-weight: 700
+        }
+
+        .mod-row svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0
+        }
+
+        .mod-row.active svg {
+            stroke: #6366f1
+        }
+
+        .mod-label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        /* Group row (level 2 — expand only, not selectable) */
+        .grp-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: background .12s;
+            user-select: none;
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-top: 4px
+        }
+
+        .grp-row:hover {
+            background: #e2e8f0;
+            color: #64748b
+        }
+
+        .grp-row .chevron {
+            width: 14px;
+            height: 14px;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+            transition: transform .15s
+        }
+
+        .grp-row.expanded .chevron {
+            transform: rotate(90deg)
+        }
+
+        /* Screen row (level 3 — selectable leaf) */
+        .scr-list {
+            margin-left: 14px;
+            border-left: 1px solid rgba(203, 213, 225, .4);
+            padding-left: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            margin-bottom: 2px
+        }
+
+        .scr-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all .12s;
+            border: 1px solid transparent;
+            font-size: 11.5px;
+            color: #64748b
+        }
+
+        .scr-row:hover {
+            background: #e2e8f0;
+            color: #1e293b
+        }
+
+        .scr-row.active {
+            background: #fff;
+            border-color: #c7d2fe;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+            color: #4338ca;
+            font-weight: 600
+        }
+
+        .scr-row svg {
+            width: 11px;
+            height: 11px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+            opacity: .7
+        }
+
+        .scr-row.active svg {
+            stroke: #6366f1;
+            opacity: 1
+        }
+
+        .scr-label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .scr-subtitle {
+            font-size: 10px;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px
+        }
+
+        /* Explorer footer */
+        .explorer-footer {
+            padding: 10px 12px;
+            border-top: 1px solid #e2e8f0;
+            background: #f1f5f9;
+            font-size: 10px;
+            color: #94a3b8;
+            text-align: center;
+            flex-shrink: 0
+        }
+
+        /* ── MIDDLE: FORM PANEL ── */
+        .form-panel {
+            width: 360px;
+            background: #fff;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow-y: auto
+        }
+
+        .form-panel::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .form-panel::-webkit-scrollbar-thumb {
+            background: #cbd5e1
+        }
+
+        .sec-head {
+            padding: 9px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            cursor: pointer;
+            user-select: none
+        }
+
+        .sec-head:hover {
+            background: #f1f5f9
+        }
+
+        .sec-body {
+            padding: 14px 16px
+        }
+
+        /* API saved bar */
+        .api-saved {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 16px;
+            background: #f0fdf4;
+            border-bottom: 1px solid #bbf7d0
+        }
+
+        .api-saved.on {
+            display: flex
+        }
+
+        .api-saved-lbl {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #15803d
+        }
+
+        .api-saved-lbl::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #34d399;
+            border-radius: 50%;
+            flex-shrink: 0
+        }
+
+        .api-body {
+            overflow: hidden;
+            transition: max-height .3s ease, opacity .25s ease;
+            max-height: 200px;
+            opacity: 1
+        }
+
+        .api-body.collapsed {
+            max-height: 0;
+            opacity: 0
+        }
+
+        /* Form */
+        .field {
+            margin-bottom: 12px
+        }
+
+        .field:last-child {
+            margin-bottom: 0
+        }
+
+        .field-lbl {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+
+        .field-lbl .req {
+            color: #ef4444;
+            margin-left: 2px
+        }
+
+        input[type=text],
+        input[type=password],
+        textarea,
+        select {
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #1e293b;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            padding: 7px 10px;
+            outline: none;
+            transition: border-color .15s, box-shadow .15s;
+            border-radius: 0
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, .15)
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #94a3b8
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.55
+        }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 28px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none
+        }
+
+        select option {
+            font-family: 'Inter', sans-serif
+        }
+
+        .key-row {
+            display: flex;
+            gap: 6px
+        }
+
+        .key-row input {
+            flex: 1
+        }
+
+        .btn-sm {
+            padding: 7px 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #475569;
+            transition: all .15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            border-radius: 0
+        }
+
+        .btn-sm:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8
+        }
+
+        .btn-sm.primary {
+            background: #4f46e5;
+            border-color: #4338ca;
+            color: #fff
+        }
+
+        .btn-sm.primary:hover {
+            background: #4338ca
+        }
+
+        .btn-link {
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: #4f46e5;
+            cursor: pointer;
+            padding: 0;
+            text-decoration: underline
+        }
+
+        .field-hint {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px
+        }
+
+        .field-hint a {
+            color: #4f46e5
+        }
+
+        /* Tags */
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px
+        }
+
+        .tag {
+            padding: 3px 9px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #64748b;
+            transition: all .12s;
+            user-select: none;
+            border-radius: 0
+        }
+
+        .tag.on {
+            background: #ede9fe;
+            border-color: #6366f1;
+            color: #4f46e5
+        }
+
+        .tag:hover {
+            border-color: #6366f1;
+            color: #4f46e5
+        }
+
+        /* Slider */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        input[type=range] {
+            flex: 1;
+            height: 3px;
+            background: #e2e8f0;
+            -webkit-appearance: none;
+            appearance: none;
+            outline: none;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #4f46e5;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px #4f46e5;
+            cursor: pointer
+        }
+
+        .slider-val {
+            width: 28px;
+            text-align: right;
+            font-size: 13px;
+            font-weight: 700;
+            color: #4f46e5;
+            font-family: 'JetBrains Mono', monospace
+        }
+
+        /* Generate button */
+        .btn-gen {
+            width: 100%;
+            padding: 10px 16px;
+            background: #4f46e5;
+            border: 1px solid #4338ca;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: .02em;
+            border-radius: 0
+        }
+
+        .btn-gen:hover {
+            background: #4338ca
+        }
+
+        .btn-gen:disabled {
+            background: #94a3b8;
+            border-color: #94a3b8;
+            cursor: not-allowed
+        }
+
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, .35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            display: none
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        /* ── RIGHT: OUTPUT PANEL ── */
+        .output-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f8fafc
+        }
+
+        /* Stats row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-bottom: 1px solid #e2e8f0;
+            background: #fff;
+            flex-shrink: 0
+        }
+
+        .stat-cell {
+            padding: 12px 16px;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .stat-cell:last-child {
+            border-right: none
+        }
+
+        .stat-num {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4f46e5;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1
+        }
+
+        .stat-lbl {
+            font-size: 10px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+
+        .stat-sub {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 1px
+        }
+
+        /* Output toolbar */
+        .out-bar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            flex-shrink: 0
+        }
+
+        .tab-grp {
+            display: flex;
+            height: 100%
+        }
+
+        .tab {
+            padding: 0 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: 'Inter', sans-serif;
+            border-bottom: 2px solid transparent;
+            transition: all .15s;
+            height: 100%;
+            display: flex;
+            align-items: center
+        }
+
+        .tab:hover {
+            color: #1e293b
+        }
+
+        .tab.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5
+        }
+
+        .bar-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 6px
+        }
+
+        .btn-bar {
+            padding: 4px 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            color: #475569;
+            transition: all .15s;
+            border-radius: 0
+        }
+
+        .btn-bar:hover {
+            background: #f8fafc;
+            color: #1e293b
+        }
+
+        .btn-bar.primary {
+            background: #4f46e5;
+            border-color: #4338ca;
+            color: #fff
+        }
+
+        .btn-bar.primary:hover {
+            background: #4338ca
+        }
+
+        /* Output area */
+        .out-area {
+            flex: 1;
+            overflow-y: auto;
+            position: relative
+        }
+
+        .out-area::-webkit-scrollbar {
+            width: 6px
+        }
+
+        .out-area::-webkit-scrollbar-thumb {
+            background: #cbd5e1
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 12px;
+            color: #94a3b8;
+            padding: 40px
+        }
+
+        .empty-icon {
+            width: 52px;
+            height: 52px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff
+        }
+
+        .empty-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: #cbd5e1;
+            fill: none;
+            stroke-width: 1.5
+        }
+
+        .empty-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b
+        }
+
+        .empty-desc {
+            font-size: 12px;
+            color: #94a3b8;
+            text-align: center;
+            max-width: 300px;
+            line-height: 1.6
+        }
+
+        /* Preview */
+        #preview-view {
+            display: none;
+            padding: 20px
+        }
+
+        .tc-card {
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            margin-bottom: 14px
+        }
+
+        .tc-card-head {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc
+        }
+
+        .tc-id-cell {
+            padding: 8px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: #4f46e5;
+            border-right: 1px solid #e2e8f0;
+            white-space: nowrap;
+            min-width: 80px
+        }
+
+        .tc-title-cell {
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            flex: 1
+        }
+
+        .tc-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            border-bottom: 1px solid #e2e8f0
+        }
+
+        .tc-row:last-child {
+            border-bottom: none
+        }
+
+        .tc-row-lbl {
+            padding: 9px 12px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: #64748b;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0
+        }
+
+        .tc-row-val {
+            padding: 9px 12px;
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.6
+        }
+
+        .tc-row-val.pre {
+            background: #fffbeb;
+            border-left: 3px solid #fbbf24;
+            color: #92400e;
+            font-size: 12px
+        }
+
+        .step-ol {
+            list-style: none;
+            padding: 0;
+            margin: 0
+        }
+
+        .step-li {
+            display: flex;
+            gap: 9px;
+            padding: 4px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 12px;
+            color: #475569
+        }
+
+        .step-li:last-child {
+            border-bottom: none
+        }
+
+        .step-n {
+            min-width: 20px;
+            height: 20px;
+            background: #ede9fe;
+            border: 1px solid #c4b5fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #4f46e5;
+            flex-shrink: 0;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 1px
+        }
+
+        .result-ul {
+            list-style: none;
+            padding: 0;
+            margin: 0
+        }
+
+        .result-li {
+            display: flex;
+            gap: 8px;
+            padding: 3px 0;
+            font-size: 12px;
+            color: #475569
+        }
+
+        .result-li::before {
+            content: '';
+            width: 14px;
+            height: 14px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            flex-shrink: 0;
+            margin-top: 2px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%2315803d' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center
+        }
+
+        /* Raw */
+        #raw-view {
+            display: none
+        }
+
+        #raw-view pre {
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            color: #475569;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 400px
+        }
+
+        /* Loading */
+        .loading-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(248, 250, 252, .88);
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px
+        }
+
+        .loading-overlay.active {
+            display: flex
+        }
+
+        .loading-spinner {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #e2e8f0;
+            border-top-color: #4f46e5;
+            border-radius: 50%;
+            animation: spin .7s linear infinite
+        }
+
+        .loading-lbl {
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569
+        }
+
+        .loading-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center
+        }
+
+        .loading-step {
+            font-size: 11px;
+            color: #94a3b8;
+            opacity: 0;
+            animation: fadeIn .4s ease forwards
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                color: #15803d
+            }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-left: 3px solid #4f46e5;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #1e293b;
+            z-index: 9999;
+            transform: translateY(60px);
+            opacity: 0;
+            transition: all .25s ease;
+            max-width: 320px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08)
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        .toast.success {
+            border-left-color: #15803d
+        }
+
+        .toast.error {
+            border-left-color: #dc2626
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hidden dummy fields to absorb browser autofill -->
+    <input type="text" name="prevent_autofill_username" style="display:none" tabindex="-1" aria-hidden="true" />
+    <input type="password" name="prevent_autofill_password" style="display:none" tabindex="-1" aria-hidden="true" />
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div class="topbar-logo">
+            <svg viewBox="0 0 16 16">
+                <rect x="2" y="2" width="5" height="5" />
+                <rect x="9" y="2" width="5" height="5" />
+                <rect x="2" y="9" width="5" height="5" />
+                <rect x="9" y="9" width="5" height="5" />
+            </svg>
+        </div>
+        <span class="topbar-brand">Olivine BDD</span>
+        <div class="topbar-sep"></div>
+        <span class="topbar-page">BDD — Requirements Engine</span>
+        <div class="topbar-right">
+            <div class="status-dot"></div>
+            <span id="ai-conn-status">AI Connected</span>
+            <div id="sample-mode-badge"
+                style="margin-left:8px;background:#f59e0b;color:#fff;font-size:9px;padding:1px 5px;font-weight:700;display:none">
+                SAMPLE MODE</div>
+        </div>
+    </div>
+
+    <!-- WORKSPACE -->
+    <div class="workspace">
+
+        <!-- 1. EXPLORER SIDEBAR — 3-level: App > Group > Screen -->
+        <div class="explorer" style="width:260px">
+            <div class="explorer-header">
+                <div class="explorer-title">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                    </svg>
+                    <span class="explorer-label">Screen Explorer</span>
+                </div>
+                <input id="scr-search" type="search" name="scr_search_nofill" placeholder="Search screens..."
+                    autocomplete="off" role="searchbox" data-form-type="other"
+                    style="font-size:11px;padding:3px 7px;border:1px solid #e2e8f0;background:#fff;outline:none;width:100%;margin-top:0;font-family:'Inter',sans-serif;color:#1e293b"
+                    oninput="filterTree(this.value)" />
+            </div>
+            <div class="explorer-tree" id="explorer-tree"></div>
+            <div class="explorer-footer" id="explorer-footer">Select a screen to load its story</div>
+        </div>
+
+        <!-- 2. FORM PANEL -->
+        <div class="form-panel">
+
+            <!-- Generate (MOVED TO TOP) -->
+            <div style="padding:14px 16px; border-bottom:1px solid #e2e8f0; background:#fff">
+                <button class="btn-gen" id="btn-gen" onclick="generate()"
+                    style="background:#15803d; border-color:#166534">
+                    <div class="spinner" id="spinner"></div>
+                    <span id="btn-txt">Generate BDD Scenarios</span>
+                </button>
+            </div>
+
+            <!-- AI Config -->
+            <div class="sec-head" onclick="toggleApiPanel()">
+                AI Configuration
+                <span id="api-status-lbl"
+                    style="font-size:10px;font-weight:600;color:#94a3b8;text-transform:none;letter-spacing:0">Not
+                    configured</span>
+            </div>
+            <div class="api-saved" id="api-saved-bar">
+                <div class="api-saved-lbl">API Key active</div>
+                <button class="btn-link" onclick="expandApi()">Change</button>
+            </div>
+            <div class="api-body" id="api-body">
+                <div class="sec-body">
+                    <div class="field">
+                        <label class="field-lbl">Gemini API Key <span class="req">*</span></label>
+                        <div class="key-row" style="background:#f1f5f9;padding:10px;border:1px dashed #cbd5e1">
+                            <input type="password" id="api-key" name="gemini_api_key_nofill" placeholder="AIzaSy..."
+                                autocomplete="new-password" data-form-type="other" style="background:#fff" />
+                            <button class="btn-sm" id="btn-show" onclick="toggleKey()">Show</button>
+                            <button class="btn-sm primary" onclick="saveKey()" style="min-width:80px">SAVE</button>
+                        </div>
+                        <div class="field-hint">Free key at <a href="https://aistudio.google.com/apikey"
+                                target="_blank">aistudio.google.com</a></div>
+                    </div>
+                    <div style="display:flex;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid #e2e8f0">
+                        <button class="btn-sm" onclick="toggleSampleMode()" id="btn-sample-toggle" style="flex:1">Enable
+                            Sample Mode</button>
+                        <button class="btn-sm" onclick="forceSystemKey()" style="flex:1">Reset to System Key</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Input -->
+            <div class="sec-head">
+                Story / Feature
+                <span id="selected-screen-badge"
+                    style="font-size:10px;font-weight:600;color:#4f46e5;text-transform:none;letter-spacing:0;background:#ede9fe;padding:2px 7px;display:none"></span>
+            </div>
+            <div class="sec-body">
+                <div class="field">
+                    <label class="field-lbl">Story Title <span class="req">*</span></label>
+                    <input type="text" id="story-title"
+                        placeholder="e.g. Customer Master — Create and Manage Customers" />
+                </div>
+                <div class="field">
+                    <label class="field-lbl">Screen Path</label>
+                    <input type="text" id="story-module" placeholder="Select from Explorer or type manually"
+                        style="color:#4f46e5;font-weight:500" />
+                </div>
+                <div class="field">
+                    <label class="field-lbl">URL</label>
+                    <input type="text" id="story-url" placeholder="/path/to/screen"
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748b" />
+                </div>
+                <div class="field">
+                    <label class="field-lbl">Story Description <span class="req">*</span></label>
+                    <textarea id="story-desc" rows="8" placeholder="Select a screen from the Explorer to auto-fill the story description, or type manually.
+
+- View list with search and filters
+- Create with mandatory fields
+- Validation for missing fields
+- Edit existing record
+- Keyboard shortcuts (F2=New, F8=Save)"></textarea>
+                </div>
+            </div>
+
+            <!-- Options -->
+            <div class="sec-head">Generation Options</div>
+            <div class="sec-body">
+                <div class="field">
+                    <label class="field-lbl">Test Types</label>
+                    <div class="tag-group" id="test-types">
+                        <span class="tag on" data-val="Happy Path" onclick="toggleTag(this)">Happy Path</span>
+                        <span class="tag on" data-val="Validation" onclick="toggleTag(this)">Validation</span>
+                        <span class="tag on" data-val="Edge Case" onclick="toggleTag(this)">Edge Cases</span>
+                        <span class="tag on" data-val="Error Handling" onclick="toggleTag(this)">Error Handling</span>
+                        <span class="tag" data-val="Performance" onclick="toggleTag(this)">Performance</span>
+                        <span class="tag" data-val="Security" onclick="toggleTag(this)">Security</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-lbl">Number of Test Cases</label>
+                    <div class="slider-row">
+                        <input type="range" id="tc-count" min="3" max="20" value="8"
+                            oninput="document.getElementById('tc-count-val').textContent=this.value" />
+                        <div class="slider-val" id="tc-count-val">8</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-lbl">Output Format</label>
+                    <select id="output-format">
+                        <option value="tc-md">TC Format (TC001 style — plain text)</option>
+                        <option value="scenario-md">Scenario Format (Table with Selectors)</option>
+                        <option value="both">Both Formats</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3. OUTPUT PANEL -->
+        <div class="output-panel">
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-cell">
+                    <div class="stat-num" id="stat-total">0</div>
+                    <div>
+                        <div class="stat-lbl">Total</div>
+                        <div class="stat-sub">Test Cases</div>
+                    </div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-num" id="stat-happy">0</div>
+                    <div>
+                        <div class="stat-lbl">Happy Path</div>
+                        <div class="stat-sub">Positive flows</div>
+                    </div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-num" id="stat-val">0</div>
+                    <div>
+                        <div class="stat-lbl">Validation</div>
+                        <div class="stat-sub">Field checks</div>
+                    </div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-num" id="stat-edge">0</div>
+                    <div>
+                        <div class="stat-lbl">Edge Cases</div>
+                        <div class="stat-sub">Boundary & error</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="out-bar">
+                <div class="tab-grp">
+                    <button class="tab active" id="tab-preview" onclick="switchTab('preview')">Preview</button>
+                    <button class="tab" id="tab-raw" onclick="switchTab('raw')">Raw Markdown</button>
+                    <button class="tab" id="tab-tdd" onclick="switchTab('tdd')" style="display:none">TDD
+                        (Playwright)</button>
+                </div>
+                <div class="bar-actions">
+                    <button class="btn-bar" style="background:#4338ca;color:#fff;border-color:#3730a3;display:none"
+                        id="btn-gen-tdd" onclick="generateTdd()">Generate TDD</button>
+                    <button class="btn-bar" onclick="copyOut()">Copy</button>
+                    <button class="btn-bar" onclick="downloadMD()">Download .md</button>
+                    <button class="btn-bar primary" onclick="saveToProject()">Save to Project</button>
+                </div>
+            </div>
+
+            <!-- Output area -->
+            <div class="out-area" id="out-area">
+                <div class="loading-overlay" id="loading-overlay">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-lbl">Generating test cases...</div>
+                    <div class="loading-steps" id="loading-steps"></div>
+                </div>
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18" />
+                            <line x1="3" y1="9" x2="21" y2="9" />
+                            <line x1="9" y1="9" x2="9" y2="21" />
+                        </svg>
+                    </div>
+                    <div class="empty-title">No test cases generated</div>
+                    <div class="empty-desc">Select a module from the Explorer, fill in the story details, then click
+                        Generate Test Cases.</div>
+                </div>
+                <div id="preview-view"></div>
+                <div id="raw-view">
+                    <pre id="raw-content"></pre>
+                </div>
+                <div id="tdd-view" style="display:none">
+                    <pre id="tdd-content" class="code-view"
+                        style="padding:15px;background:#0f172a;color:#cbd5e1;font-size:11.5px;line-height:1.6"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOAST -->
+        <div class="toast" id="toast"></div>
+
+        <!-- MENU DATA (3-level screen tree) -->
+        <script src="tc-menu-data.js"></script>
+
+        <script>
+
+            // ── MENU DATA loaded from tc-menu-data.js (TC_MENU) ──
+            // TC_MENU is defined in tc-menu-data.js included via <script> tag
+            // fallback empty if not loaded
+            const MENU_DATA = (typeof TC_MENU !== 'undefined') ? TC_MENU : [];
+
+            // ── SVG ICONS ──
+            const SVG_CHEVRON_APP = `<svg class="chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>`;
+            const SVG_CHEVRON_GRP = `<svg class="chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>`;
+            const SVG_BOX = `<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="0"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0v2"/></svg>`;
+            const SVG_FILE = `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+
+            // ── STATE ──
+            let expandedApps = new Set(['retail']);
+            let expandedGrps = new Set();
+            let selectedScreenId = null;
+            let generatedRaw = '';
+            let generatedTdd = '';
+            let currentTab = 'preview';
+            let searchFilter = '';
+
+            // ── FILTER ──
+            function filterTree(val) {
+                searchFilter = val.toLowerCase().trim();
+                buildTree();
+                // Auto-expand all when searching
+                if (searchFilter) {
+                    MENU_DATA.forEach(app => {
+                        expandedApps.add(app.id);
+                        (app.children || []).forEach(grp => expandedGrps.add(grp.id));
+                    });
+                    buildTree();
+                }
+            }
+
+            // ── BUILD 3-LEVEL EXPLORER TREE ──
+            function buildTree() {
+                const tree = document.getElementById('explorer-tree');
+                tree.innerHTML = '';
+                let totalScreens = 0;
+
+                MENU_DATA.forEach(app => {
+                    // Collect all leaf screens for this app to check if any match filter
+                    const allScreens = [];
+                    (app.children || []).forEach(grp => (grp.children || []).forEach(s => allScreens.push(s)));
+                    const appMatches = !searchFilter || allScreens.some(s =>
+                        s.label.toLowerCase().includes(searchFilter) ||
+                        (s.subtitle || '').toLowerCase().includes(searchFilter)
+                    );
+                    if (!appMatches) return;
+
+                    const wrap = document.createElement('div');
+                    wrap.style.cssText = 'margin-bottom:2px;user-select:none';
+
+                    // Level 1: App row
+                    const isAppExp = expandedApps.has(app.id);
+                    const appRow = document.createElement('div');
+                    appRow.className = 'app-row' + (isAppExp ? ' expanded' : '');
+                    appRow.innerHTML = `${SVG_CHEVRON_APP}<span class="app-icon">${SVG_BOX}</span><span class="app-label">${app.label}</span>`;
+                    appRow.onclick = () => {
+                        if (expandedApps.has(app.id)) expandedApps.delete(app.id);
+                        else expandedApps.add(app.id);
+                        buildTree();
+                    };
+                    wrap.appendChild(appRow);
+
+                    if (isAppExp && app.children) {
+                        const grpContainer = document.createElement('div');
+                        grpContainer.style.cssText = 'margin-left:22px;border-left:1px solid rgba(203,213,225,.5);padding-left:8px;margin-top:2px';
+
+                        app.children.forEach(grp => {
+                            // Filter: check if any screen in this group matches
+                            const grpScreens = grp.children || [];
+                            const visibleScreens = searchFilter
+                                ? grpScreens.filter(s => s.label.toLowerCase().includes(searchFilter) || (s.subtitle || '').toLowerCase().includes(searchFilter))
+                                : grpScreens;
+                            if (visibleScreens.length === 0) return;
+
+                            // Level 2: Group row (expand/collapse only)
+                            const isGrpExp = expandedGrps.has(grp.id) || !!searchFilter;
+                            const grpRow = document.createElement('div');
+                            grpRow.className = 'grp-row' + (isGrpExp ? ' expanded' : '');
+                            grpRow.innerHTML = `${SVG_CHEVRON_GRP}<span>${grp.label}</span>`;
+                            grpRow.onclick = (e) => {
+                                e.stopPropagation();
+                                if (expandedGrps.has(grp.id)) expandedGrps.delete(grp.id);
+                                else expandedGrps.add(grp.id);
+                                buildTree();
+                            };
+                            grpContainer.appendChild(grpRow);
+
+                            if (isGrpExp) {
+                                const scrList = document.createElement('div');
+                                scrList.className = 'scr-list';
+
+                                visibleScreens.forEach(scr => {
+                                    totalScreens++;
+                                    const scrRow = document.createElement('div');
+                                    scrRow.className = 'scr-row' + (selectedScreenId === scr.id ? ' active' : '');
+                                    scrRow.innerHTML = `${SVG_FILE}<div style="min-width:0"><div class="scr-label">${highlightMatch(scr.label)}</div>${scr.subtitle ? `<div class="scr-subtitle">${scr.subtitle}</div>` : ''}</div>`;
+                                    scrRow.onclick = (e) => {
+                                        e.stopPropagation();
+                                        selectScreen(app, grp, scr);
+                                    };
+                                    scrList.appendChild(scrRow);
+                                });
+                                grpContainer.appendChild(scrList);
+                            }
+                        });
+                        wrap.appendChild(grpContainer);
+                    }
+                    tree.appendChild(wrap);
+                });
+
+                document.getElementById('explorer-footer').textContent =
+                    selectedScreenId ? `Screen selected — ${totalScreens} total` : `${totalScreens} screens available`;
+            }
+
+            function highlightMatch(label) {
+                if (!searchFilter) return label;
+                const idx = label.toLowerCase().indexOf(searchFilter);
+                if (idx < 0) return label;
+                return label.slice(0, idx) + `<mark style="background:#fef08a;padding:0">${label.slice(idx, idx + searchFilter.length)}</mark>` + label.slice(idx + searchFilter.length);
+            }
+
+            function selectScreen(app, grp, scr) {
+                selectedScreenId = scr.id;
+                buildTree();
+                // Fill form fields
+                const path = `${app.label} > ${grp.label} > ${scr.label}`;
+                document.getElementById('story-title').value = `${scr.label} — ${scr.subtitle || scr.label}`;
+                document.getElementById('story-module').value = path;
+                document.getElementById('story-url').value = scr.path || '';
+                if (scr.storyDesc) document.getElementById('story-desc').value = scr.storyDesc;
+                // Badge
+                const badge = document.getElementById('selected-screen-badge');
+                badge.textContent = scr.label;
+                badge.style.display = 'inline-block';
+                toast(`Screen loaded: ${scr.label}`, 'success');
+            }
+
+
+
+            window.addEventListener('load', () => {
+                const centralKey = 'AIzaSyBAOA3xvBpa3FQF4l27hVh7-_5mlTR3zB0';
+                const saved = localStorage.getItem('olivine_tc_apikey');
+                // Always update if saved key is missing, undefined, or an old central key
+                if (!saved || saved === 'undefined' || saved !== centralKey) {
+                    localStorage.setItem('olivine_tc_apikey', centralKey);
+                    document.getElementById('api-key').value = centralKey;
+                } else {
+                    document.getElementById('api-key').value = saved;
+                }
+
+                // Anti-autofill: clear search box on load (browser may inject username here)
+                const scrSearch = document.getElementById('scr-search');
+                if (scrSearch) { scrSearch.value = ''; searchFilter = ''; }
+
+                collapseApi();
+                buildTree();
+
+                // Delayed anti-autofill: some browsers autofill AFTER load event
+                setTimeout(() => {
+                    const s = document.getElementById('scr-search');
+                    if (s && s.value) { s.value = ''; searchFilter = ''; buildTree(); }
+                }, 150);
+            });
+
+            function collapseApi() {
+                const saved = localStorage.getItem('olivine_tc_apikey') || '';
+                const isSample = localStorage.getItem('olivine_tc_sample') === 'true';
+                const hint = isSample ? ' (Sample Mode)' : (saved ? ` (...${saved.slice(-4)})` : '');
+                document.getElementById('api-body').classList.add('collapsed');
+                document.getElementById('api-saved-bar').classList.add('on');
+                document.getElementById('api-status-lbl').textContent = (isSample ? 'Mock Mode' : 'Configured') + hint;
+                document.getElementById('api-status-lbl').style.color = isSample ? '#d97706' : '#15803d';
+            }
+
+            function forceSystemKey() {
+                const centralKey = 'AIzaSyBAOA3xvBpa3FQF4l27hVh7-_5mlTR3zB0';
+                localStorage.setItem('olivine_tc_apikey', centralKey);
+                localStorage.setItem('olivine_tc_sample', 'false');
+                document.getElementById('api-key').value = centralKey;
+                toast('Reset to System Key', 'success');
+                collapseApi();
+                location.reload();
+            }
+
+            function toggleSampleMode() {
+                const current = localStorage.getItem('olivine_tc_sample') === 'true';
+                localStorage.setItem('olivine_tc_sample', String(!current));
+                toast(`Sample Mode ${!current ? 'Enabled' : 'Disabled'}`, 'success');
+                location.reload();
+            }
+            function toggleApiPanel() {
+                const isCollapsed = document.getElementById('api-body').classList.contains('collapsed');
+                if (isCollapsed) expandApi();
+                else collapseApi();
+            }
+
+            function expandApi() {
+                const saved = localStorage.getItem('olivine_tc_apikey') || '';
+                if (saved) document.getElementById('api-key').value = saved;
+
+                const hint = saved ? ` (...${saved.slice(-4)})` : '';
+                document.getElementById('api-body').classList.remove('collapsed');
+                document.getElementById('api-saved-bar').classList.remove('on');
+                document.getElementById('api-status-lbl').textContent = (saved ? 'Configured' : 'Not configured') + hint;
+                document.getElementById('api-status-lbl').style.color = (saved) ? '#15803d' : '#94a3b8';
+                setTimeout(() => document.getElementById('api-key').focus(), 300);
+            }
+            function toggleKey() {
+                const el = document.getElementById('api-key');
+                const btn = document.getElementById('btn-show');
+                el.type = el.type === 'password' ? 'text' : 'password';
+                btn.textContent = el.type === 'password' ? 'Show' : 'Hide';
+            }
+            function saveKey() {
+                const key = document.getElementById('api-key').value.trim();
+                if (key) {
+                    localStorage.setItem('olivine_tc_apikey', key);
+                    console.log('API Key Saved to LocalStorage');
+                    toast('API key saved', 'success');
+                    collapseApi();
+                }
+                else toast('Enter a valid API key', 'error');
+            }
+
+            // ── TAGS ──
+            function toggleTag(el) { el.classList.toggle('on'); }
+            function getActiveTags() { return [...document.querySelectorAll('#test-types .tag.on')].map(t => t.dataset.val); }
+
+            // ── TABS ──
+            function switchTab(tab) {
+                currentTab = tab;
+                document.getElementById('tab-preview').classList.toggle('active', tab === 'preview');
+                document.getElementById('tab-raw').classList.toggle('active', tab === 'raw');
+                document.getElementById('tab-tdd').classList.toggle('active', tab === 'tdd');
+
+                document.getElementById('preview-view').style.display = tab === 'preview' && generatedRaw ? 'block' : 'none';
+                document.getElementById('raw-view').style.display = tab === 'raw' && generatedRaw ? 'block' : 'none';
+                document.getElementById('tdd-view').style.display = tab === 'tdd' && generatedTdd ? 'block' : 'none';
+
+                document.getElementById('empty-state').style.display = (generatedRaw || generatedTdd) ? 'none' : 'flex';
+            }
+
+            // ── GENERATE ──
+            async function generate() {
+                const isSample = localStorage.getItem('olivine_tc_sample') === 'true';
+                if (isSample) { return generateSample(); }
+
+                console.log('Generating Test Cases...');
+                let apiKey = document.getElementById('api-key').value.trim();
+                if (!apiKey) {
+                    apiKey = localStorage.getItem('olivine_tc_apikey') || '';
+                    if (apiKey) console.log('Using Key from LocalStorage');
+                }
+
+                console.log('API Key Present:', !!apiKey);
+
+                const title = document.getElementById('story-title').value.trim();
+                const desc = document.getElementById('story-desc').value.trim();
+                const module_ = document.getElementById('story-module').value.trim();
+                const url_ = document.getElementById('story-url').value.trim();
+                const count = document.getElementById('tc-count').value;
+                const types = getActiveTags();
+
+                if (!apiKey) { toast('API key is required', 'error'); expandApi(); return; }
+                if (!title) { toast('Story Title is required', 'error'); return; }
+                if (!desc) { toast('Story Description is required', 'error'); return; }
+
+                // Reset TDD state
+                generatedTdd = '';
+                document.getElementById('tdd-content').textContent = '';
+                document.getElementById('tab-tdd').style.display = 'none';
+                document.getElementById('btn-gen-tdd').style.display = 'none';
+
+                setLoading(true);
+                showLoadingSteps();
+
+                const prompt = `You are a senior QA engineer for Olivine Retail ERP. Generate exactly ${count} detailed test cases.
+
+STORY TITLE: ${title}
+MODULE/SCREEN: ${module_ || 'Olivine Retail ERP'}
+URL: ${url_ || 'N/A'}
+STORY DESCRIPTION:
+${desc}
+
+TEST TYPES TO COVER: ${types.join(', ')}
+
+Use EXACTLY this format, plain text only:
+
+Test Case ID: TC001
+Test Case Title: [Title]
+
+Description:
+[One sentence describing what this test verifies]
+
+Preconditions:
+[User role and data requirements]
+
+Steps:
+1. [Specific action]
+2. [Specific action]
+
+Expected Results:
+1. [Verifiable outcome]
+2. [Verifiable outcome]
+
+
+RULES:
+1. Generate exactly ${count} test cases numbered TC001 to TC${String(count).padStart(3, '0')}
+2. Cover: ${types.join(', ')}
+3. Steps must be specific — include exact button names, field names, values
+4. Use realistic test data (specific names, codes, amounts)
+5. Preconditions must specify the user role
+6. Expected Results must be specific and verifiable
+7. Separate each test case with a blank line
+8. Plain text only — no markdown, no asterisks, no hash symbols
+9. For Olivine ERP: buttons are New (F2), Save (F8), Edit (F3), Cancel (ESC)
+
+Generate the ${count} test cases now:`;
+
+                try {
+                    const res = await fetch(
+                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+                        {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.35, maxOutputTokens: 8192 } })
+                        }
+                    );
+                    if (!res.ok) {
+                        const e = await res.json();
+                        console.error('API Error Response:', e);
+                        throw new Error(`[${res.status}] ${e.error?.message || 'Unknown API Error'}`);
+                    }
+                    const data = await res.json();
+                    let text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (!text) throw new Error('No content returned');
+
+                    const now = new Date();
+                    const timeStamp = now.toISOString().split('T')[0] + ' ' + (now.getHours() % 12 || 12) + ':' + now.getMinutes().toString().padStart(2, '0') + (now.getHours() >= 12 ? 'P' : 'A') + ' IST';
+                    const metaHeader = "# Test Cases: " + title + "\n**Module:** " + (module_ || 'Retail Workspace') + "\n**Generated:** " + timeStamp + "\n**Generator:** Olivine AI TC Generator (Gemini 2.0 Flash)\n\n---\n\n";
+                    text = metaHeader + text.replace(/^```[a-z]*\n/i, '').replace(/\n```$/i, '');
+
+                    generatedRaw = text;
+                    updateStats(text);
+                    renderPreview(text);
+                    document.getElementById('raw-content').textContent = text;
+                    document.getElementById('empty-state').style.display = 'none';
+
+                    // Show TDD options
+                    document.getElementById('tab-tdd').style.display = 'inline-block';
+                    document.getElementById('btn-gen-tdd').style.display = 'inline-block';
+
+                    switchTab(currentTab);
+                    toast('BDD scenarios generated', 'success');
+                } catch (err) {
+                    toast('Error: ' + err.message, 'error');
+                } finally {
+                    setLoading(false);
+                }
+            }
+
+            async function generateTdd() {
+                if (!generatedRaw) { toast('Generate BDD first', 'error'); return; }
+
+                let apiKey = document.getElementById('api-key').value.trim();
+                if (!apiKey) apiKey = localStorage.getItem('olivine_tc_apikey') || '';
+
+                const title = document.getElementById('story-title').value.trim();
+                const module_ = document.getElementById('story-module').value.trim();
+                const url_ = document.getElementById('story-url').value.trim();
+
+                setLoading(true);
+                toast('Generating TDD (Playwright)...', 'info');
+
+                const prompt = `Act as an expert QA Automation Engineer for Olivine Retail ERP.
+Your task: Write a complete Playwright TypeScript TDD script (*.spec.ts) based on the BDD scenarios provided below.
+
+BDD SCENARIOS:
+${generatedRaw}
+
+TECHNICAL RULES:
+1. Group the scenarios inside a \`test.describe()\` block named after the screen: "${title}".
+2. Import { test, expect } from '@playwright/test'.
+3. Mimic the locator strategies for Olivine ERP:
+   - Buttons: \`page.getByRole('button', { name: "Save (F8)" })\`, \`New (F2)\`, \`Edit (F3)\`, \`Cancel (ESC)\`.
+   - Inputs: \`page.getByLabel()\` or \`page.locator('input[name="..."]')\`.
+   - Toolbar: The toolbar is constant across screens.
+4. Include a \`test.beforeEach()\` that navigates to "${url_ || '/'}".
+5. For each TC00x in BDD, create a corresponding \`test('TC00x - Title', async ({ page }) => { ... })\`.
+6. Include the following metadata as a comment at the top:
+   **Menu ID:** ${selectedScreenId || 'unknown'}
+   //${selectedScreenId || 'unknown'}
+   **Module:** ${module_ || 'Retail'}
+
+7. Return ONLY valid TypeScript code. NO markdown blocks, NO explanations.
+
+Generate the pure Playwright code now:`;
+
+                try {
+                    const res = await fetch(
+                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+                        {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.1, maxOutputTokens: 8192 } })
+                        }
+                    );
+                    if (!res.ok) throw new Error('Gemini API Error');
+                    const data = await res.json();
+                    let text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (!text) throw new Error('No content returned');
+
+                    // Clean code formatting
+                    text = text.replace(/^```[a-z]*\n/i, '').replace(/\n```$/i, '').trim();
+
+                    generatedTdd = text;
+                    document.getElementById('tdd-content').textContent = text;
+                    switchTab('tdd');
+                    toast('TDD (Playwright) generated successfully', 'success');
+                } catch (err) {
+                    toast('TDD Generation Failed: ' + err.message, 'error');
+                } finally {
+                    setLoading(false);
+                }
+            }
+
+            // ── RENDER PREVIEW ──
+            function renderPreview(raw) {
+                const blocks = parseTC(raw);
+                let html = '';
+                blocks.forEach(tc => {
+                    html += `< div class="tc-card" >
+                        <div class="tc-card-head">
+                            <div class="tc-id-cell">${tc.id}</div>
+                            <div class="tc-title-cell">${tc.title}</div>
+                        </div>
+      ${tc.description ? `<div class="tc-row"><div class="tc-row-lbl">Description</div><div class="tc-row-val">${tc.description}</div></div>` : ''}
+      ${tc.preconditions ? `<div class="tc-row"><div class="tc-row-lbl">Preconditions</div><div class="tc-row-val pre">${tc.preconditions}</div></div>` : ''}
+      ${tc.steps.length ? `<div class="tc-row"><div class="tc-row-lbl">Steps</div><div class="tc-row-val"><ol class="step-ol">${tc.steps.map((s, i) => `<li class="step-li"><div class="step-n">${i + 1}</div><span>${s}</span></li>`).join('')}</ol></div></div>` : ''}
+      ${tc.results.length ? `<div class="tc-row"><div class="tc-row-lbl">Expected</div><div class="tc-row-val"><ul class="result-ul">${tc.results.map(r => `<li class="result-li">${r}</li>`).join('')}</ul></div></div>` : ''}
+    </div > `;
+                });
+                document.getElementById('preview-view').innerHTML = html;
+            }
+
+            function parseTC(raw) {
+                const blocks = [];
+                const parts = raw.split(/(?=Test Case ID:)/i).filter(p => p.trim());
+                parts.forEach(part => {
+                    const lines = part.split('\n').map(l => l.trim()).filter(l => l);
+                    const tc = { id: '', title: '', description: '', preconditions: '', steps: [], results: [] };
+                    let sec = '';
+                    lines.forEach(line => {
+                        if (/^Test Case ID:/i.test(line)) tc.id = line.replace(/^Test Case ID:\s*/i, '').trim();
+                        else if (/^Test Case Title:/i.test(line)) tc.title = line.replace(/^Test Case Title:\s*/i, '').trim();
+                        else if (/^Description:$/i.test(line)) sec = 'desc';
+                        else if (/^Preconditions?:$/i.test(line)) sec = 'pre';
+                        else if (/^Steps:$/i.test(line)) sec = 'steps';
+                        else if (/^Expected Results?:$/i.test(line)) sec = 'results';
+                        else {
+                            if (sec === 'desc') tc.description += (tc.description ? ' ' : '') + line;
+                            else if (sec === 'pre') tc.preconditions += (tc.preconditions ? ' ' : '') + line;
+                            else if (sec === 'steps') { const c = line.replace(/^\d+\.\s*/, ''); if (c) tc.steps.push(c); }
+                            else if (sec === 'results') { const c = line.replace(/^\d+\.\s*/, ''); if (c) tc.results.push(c); }
+                        }
+                    });
+                    if (tc.id || tc.title) blocks.push(tc);
+                });
+                return blocks;
+            }
+
+            // ── STATS ──
+            function updateStats(raw) {
+                const total = (raw.match(/^Test Case ID:/gim) || []).length;
+                const happy = (raw.match(/happy path|create.*success|view.*list|navigate|open.*form/gi) || []).length;
+                const val = (raw.match(/validat|missing|mandatory|required|error message/gi) || []).length;
+                const edge = (raw.match(/duplicate|boundary|cancel|discard|prevent|network/gi) || []).length;
+                anim('stat-total', total);
+                anim('stat-happy', Math.min(Math.ceil(happy / 2), total));
+                anim('stat-val', Math.min(Math.ceil(val / 4), total));
+                anim('stat-edge', Math.min(Math.ceil(edge / 4), total));
+            }
+            function anim(id, target) {
+                const el = document.getElementById(id);
+                let cur = 0; const step = Math.max(1, Math.ceil(target / 15));
+                const t = setInterval(() => { cur = Math.min(cur + step, target); el.textContent = cur; if (cur >= target) clearInterval(t); }, 40);
+            }
+
+            // ── LOADING ──
+            function setLoading(on) {
+                document.getElementById('btn-gen').disabled = on;
+                document.getElementById('spinner').style.display = on ? 'block' : 'none';
+                document.getElementById('btn-txt').textContent = on ? 'Generating...' : 'Generate Test Cases';
+                document.getElementById('loading-overlay').classList.toggle('active', on);
+            }
+            function showLoadingSteps() {
+                const steps = ['Analyzing story description...', 'Identifying test scenarios...', 'Writing test case steps...', 'Formatting expected results...', 'Finalizing output...'];
+                const c = document.getElementById('loading-steps');
+                c.innerHTML = '';
+                steps.forEach((s, i) => {
+                    const el = document.createElement('div');
+                    el.className = 'loading-step'; el.textContent = s;
+                    el.style.animationDelay = `${i * .7} s`;
+                    c.appendChild(el);
+                });
+            }
+
+            async function generateSample() {
+                const title = document.getElementById('story-title').value.trim();
+                const count = parseInt(document.getElementById('tc-count').value);
+                setLoading(true);
+                showLoadingSteps();
+                await new Promise(r => setTimeout(r, 1500));
+
+                let mockText = '';
+                for (let i = 1; i <= count; i++) {
+                    mockText += `Test Case ID: TC${String(i).padStart(3, '0')} \nTest Case Title: Sample Test for ${title || 'Unnamed Feature'} \n\nDescription: \nThis is a sample test case generated in offline mode to verify UI integration.\n\nPreconditions: \nUser has access to the system.\n\nSteps: \n1.Open application\n2.Navigate to screen\n3.Perform validation\n\nExpected Results: \n1.System behaves as expected.\n\n\n`;
+                }
+                generatedRaw = mockText;
+                renderAll();
+                setLoading(false);
+                toast('Sample Mode: Generated mock test cases', 'success');
+            }
+
+            window.addEventListener('load', () => {
+                const isSample = localStorage.getItem('olivine_tc_sample') === 'true';
+                if (isSample) {
+                    document.getElementById('sample-mode-badge').style.display = 'inline-block';
+                    document.getElementById('ai-conn-status').textContent = 'Mock Mode Active';
+                }
+
+                // Core logic restoration
+                const centralKey = 'AIzaSyBAOA3xvBpa3FQF4l27hVh7-_5mlTR3zB0';
+                const saved = localStorage.getItem('olivine_tc_apikey');
+                // Always update if saved key is missing, undefined, or an old central key
+                if (!saved || saved === 'undefined' || saved !== centralKey) {
+                    localStorage.setItem('olivine_tc_apikey', centralKey);
+                    document.getElementById('api-key').value = centralKey;
+                } else {
+                    document.getElementById('api-key').value = saved;
+                }
+
+                // Anti-autofill: clear search box (browser may inject username here)
+                const scrSearch = document.getElementById('scr-search');
+                if (scrSearch) { scrSearch.value = ''; searchFilter = ''; }
+
+                collapseApi();
+                buildTree();
+
+                // Delayed anti-autofill: some browsers autofill AFTER load event
+                setTimeout(() => {
+                    const s = document.getElementById('scr-search');
+                    if (s && s.value) { s.value = ''; searchFilter = ''; buildTree(); }
+                }, 200);
+            });
+
+            // ── ACTIONS ──
+            function copyOut() {
+                if (!generatedRaw) { toast('Nothing to copy', 'error'); return; }
+                navigator.clipboard.writeText(generatedRaw).then(() => toast('Copied to clipboard', 'success'));
+            }
+            function downloadMD() {
+                if (!generatedRaw) { toast('Nothing to download', 'error'); return; }
+                const title = document.getElementById('story-title').value.trim();
+                // Generate clean filename: oliv-ret-checkout-tc.md
+                const clean = title.split('—')[0].trim().toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+                const name = 'oliv-tc-' + (clean || 'test-cases').substring(0, 30) + '.md';
+                // Use text/plain so Windows can open the file in any text editor
+                const blob = new Blob([generatedRaw], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                // Delay revoke to ensure download starts
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                toast('Downloaded: ' + name, 'success');
+            }
+            function saveToProject() {
+                if (!generatedRaw) { toast('Nothing to save', 'error'); return; }
+
+                // Get screen info from the form fields
+                const titleFull = document.getElementById('story-title').value.trim();
+                const screenPath = document.getElementById('story-module').value.trim();
+                // Extract clean screen label (text before the dash)
+                const screenLabel = titleFull.split('—')[0].trim();
+
+                if (!screenLabel) {
+                    toast('Select a screen first or enter Story Title', 'error');
+                    return;
+                }
+
+                const now = new Date();
+                const dateStr = now.toISOString().split('T')[0];
+                const header = `# Test Cases: ${titleFull} \n` +
+                    `**Module:** ${screenPath || 'N/A'} \n` +
+                    `**Menu ID:** ${selectedScreenId || 'unknown'} \n` +
+                    `//${selectedScreenId || 'unknown'} \n` +
+                    `**Generated:** ${dateStr} \n` +
+                    `**Generator:** Olivine BDD Engine (Gemini 2.0 Flash) \n\n---\n\n`;
+                const content = header + generatedRaw;
+
+                // Call Django backend API to save the file
+                const BACKEND = 'http://localhost:8000';
+                toast('Saving to project...', 'info');
+
+                fetch(`${BACKEND}/api/tc-generator/save/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: content,
+                        tdd_content: generatedTdd,
+                        screen_label: screenLabel,
+                        screen_path: screenPath
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            let msg = `Saved: ${data.filename}`;
+                            if (data.tdd_saved) msg += " + TDD Script";
+                            toast(msg, 'success');
+                            console.log('Saved to:', data.path);
+                        } else {
+                            toast('Save failed: ' + (data.error || 'Unknown'), 'error');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Save error:', err);
+                        toast('Save failed: ' + err.message, 'error');
+                    });
+            }
+
+            // ── TOAST ──
+            function toast(msg, type = 'info') {
+                const t = document.getElementById('toast');
+                if (t) {
+                    t.className = 'toast ' + type; t.textContent = msg;
+                    t.classList.add('show');
+                    setTimeout(() => t.classList.remove('show'), 3000);
+                }
+            }
+        </script>
+</body>
+
+</html>

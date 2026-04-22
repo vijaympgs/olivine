@@ -1,0 +1,378 @@
+# OLIVINE PLATFORM — MASTER ARCHITECTURE & DEPLOYMENT REFERENCE
+
+## 1. Overview
+
+Olivine is an enterprise SaaS ecosystem built around a unified platform architecture.
+
+Company
+Olivine Technologies
+
+Platform
+Olivine Platform
+
+The platform hosts multiple enterprise modules such as ERP, CRM, HRM, FMS, POS and collaboration tools.
+
+Deployment infrastructure is hosted on AWS Elastic Beanstalk with the primary domain managed through GoDaddy.
+
+Primary Domain
+olivine.co.in
+
+---
+
+# 2. Brand & Product Architecture
+
+Company
+Olivine Technologies
+
+Platform
+Olivine Platform
+
+Core Modules
+
+Olivine ERP
+Olivine CRM
+Olivine HRM
+Olivine FMS
+Olivine POS
+Olivine Meet
+
+AI Layer
+
+Mindra — platform architect AI
+Astra — retail / ERP agent
+Finra — finance agent
+Manthraa — POS and execution agent
+
+Architecture hierarchy
+
+Olivine Technologies
+└── Olivine Platform
+  ├── ERP
+  ├── CRM
+  ├── HRM
+  ├── FMS
+  ├── POS
+  └── Meet
+
+AI System
+
+Mindra
+├── Astra
+├── Finra
+└── Manthraa
+
+---
+
+# 3. Domain Architecture
+
+Primary domain
+
+olivine.co.in
+Purpose: Corporate website
+
+Founder domains
+
+vijim.olivine.co.in
+Purpose: Founder portfolio
+
+viji.olivine.co.in
+Purpose: Founder application endpoint
+
+Platform modules
+
+retail.olivine.co.in
+Purpose: Retail ERP platform
+
+app.olivine.co.in
+Purpose: Olivine platform entry
+
+erp.olivine.co.in
+Purpose: ERP module
+
+crm.olivine.co.in
+Purpose: CRM module
+
+hrm.olivine.co.in
+Purpose: HRM module
+
+fms.olivine.co.in
+Purpose: Financial management system
+
+pos.olivine.co.in
+Purpose: POS system
+
+meet.olivine.co.in
+Purpose: collaboration / meeting system
+
+All application subdomains currently point to the Elastic Beanstalk environment.
+
+---
+
+# 4. DNS Configuration (GoDaddy)
+
+Root domain
+
+Host: @
+Type: A
+Value: 13.248.243.5
+Purpose: Corporate website
+
+Application subdomains
+
+Type: CNAME
+Value: vijim-ai-prod.eba-smvi2mvs.us-east-1.elasticbeanstalk.com
+TTL: 3600
+
+Hosts configured
+
+vijim
+viji
+retail
+app
+erp
+crm
+hrm
+fms
+pos
+meet
+
+---
+
+# 5. Email Configuration
+
+Email provider
+GoDaddy Email
+
+Primary mailbox
+
+[viji@olivine.co.in](mailto:viji@olivine.co.in)
+
+Required DNS records
+
+MX records
+
+@ → smtp.secureserver.net (Priority 0)
+@ → mailstore1.secureserver.net (Priority 10)
+
+SPF record
+
+v=spf1 include:secureserver.net -all
+
+DKIM records
+
+secureserver1._domainkey
+secureserver2._domainkey
+
+DMARC record
+
+_dmarc
+v=DMARC1; p=quarantine
+
+These must remain unchanged.
+
+---
+
+# 6. AWS Infrastructure
+
+Cloud Provider
+AWS
+
+Primary services
+
+Elastic Beanstalk — application hosting
+S3 — backups and storage
+AWS CLI — deployment automation
+
+Elastic Beanstalk environment endpoint
+
+vijim-ai-prod.eba-smvi2mvs.us-east-1.elasticbeanstalk.com
+
+Application runtime
+
+Django
+Gunicorn
+Python
+
+---
+
+# 7. Expected Django Project Structure
+
+Elastic Beanstalk expects the Django project at the repository root.
+
+project-root
+
+manage.py
+requirements.txt
+Procfile
+
+vijim_ai
+├── **init**.py
+├── settings.py
+├── urls.py
+└── wsgi.py
+
+apps/
+
+---
+
+# 8. Gunicorn Configuration
+
+Procfile configuration
+
+web: gunicorn --chdir /var/app/current vijim_ai.wsgi:application
+
+If the Django project is nested
+
+web: gunicorn backend.vijim_ai.wsgi:application
+
+---
+
+# 9. Elastic Beanstalk Configuration
+
+Create
+
+.ebextensions/python.config
+
+Content
+
+option_settings:
+aws:elasticbeanstalk:container:python:
+WSGIPath: vijim_ai/wsgi.py
+
+Optional safety configuration
+
+.ebextensions/path.config
+
+container_commands:
+01_set_pythonpath:
+command: export PYTHONPATH=$PYTHONPATH:/var/app/current
+
+---
+
+# 10. Debugging Elastic Beanstalk
+
+Connect to instance
+
+eb ssh
+
+Check deployment folder
+
+cd /var/app/current
+ls
+
+Test Django module
+
+python -c "import vijim_ai"
+
+View Gunicorn logs
+
+sudo tail -f /var/log/web.stdout.log
+sudo tail -f /var/log/web.stderr.log
+
+---
+
+# 11. Deployment Process
+
+Deployment steps
+
+git add .
+git commit -m "Deployment update"
+eb deploy
+
+Expected outcome
+
+Elastic Beanstalk environment health turns green
+Gunicorn starts successfully
+Django application loads
+
+---
+
+# 12. Current Architecture
+
+GoDaddy
+│
+└── Domain + DNS
+  │
+  ▼
+Elastic Beanstalk
+  │
+  ▼
+Gunicorn
+  │
+  ▼
+Django Application
+
+---
+
+# 13. Future Scalable Architecture
+
+Route53
+↓
+CloudFront
+↓
+Elastic Load Balancer
+↓
+Elastic Beanstalk
+↓
+Django
+
+---
+
+# 14. Infrastructure Status
+
+AWS S3 backups — configured
+AWS CLI — configured
+Elastic Beanstalk environment — created
+Domain registration — completed
+DNS architecture — configured
+Email — active
+
+Pending item
+
+Django application startup fix (Gunicorn module path)
+
+---
+
+# 15. Authority
+
+Company
+Olivine Technologies
+
+Platform
+Olivine Platform
+
+Founder
+Viji
+
+Architecture Guide
+Mindra
+
+
+
+
+
+Yes, please add the following CNAME record as well.
+
+Host / Name: vijim
+Type: CNAME
+Value: vijim-ai-prod.eba-smvi2mvs.us-east-1.elasticbeanstalk.com
+TTL: 3600
+
+Purpose: Founder portfolio site.
+
+Once added, the following subdomains should all point to the same Elastic Beanstalk environment:
+
+vijim.olivine.co.in
+viji.olivine.co.in
+retail.olivine.co.in
+app.olivine.co.in
+erp.olivine.co.in
+crm.olivine.co.in
+hrm.olivine.co.in
+fms.olivine.co.in
+pos.olivine.co.in
+meet.olivine.co.in
+
+Please confirm after the record is created.
+
+Thank you.

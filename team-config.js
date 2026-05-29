@@ -37,7 +37,7 @@ const TEAM_CONFIG = [
     profileUrl: null,
     profileLabel: null,
     note: "Implementation & Rollout",
-    active: true
+    active: false
   },
   {
     id: "prabakaran",
@@ -50,7 +50,7 @@ const TEAM_CONFIG = [
     profileUrl: null,
     profileLabel: null,
     note: "Finance & Operations",
-    active: true
+    active: false
   },
   {
     id: "m5",
